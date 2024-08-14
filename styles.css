@@ -10,19 +10,40 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  --white: #fff;
+  --mask:  #fff4;
   --light: #ddd;
-  --mid: #888;
-  --dark: #222;
-  --bg:   #030;
-  --gap: 0.5em;
-  --dim: 0.25;
+  --mid:   #aaa;
+  --dark:  #222;
+  --cross: #900;
+  --bg:    #030;
+
+  --main:  300px;
+  --half:  150px;
+  --pad:     8px;
+  --brdr:    1px;
+
+  --size:   44px;
+  --semi:  calc(var(--size) / 2);
+
+  --left1:  40px;
+  --left2: calc(var(--left1) + var(--semi));
+  --left3: calc(var(--left1) + var(--semi) * 2);
+  --left4: calc(var(--left1) + var(--semi) * 4);
+  --left5: calc(var(--left1) + var(--semi) * 5);
+  --left6: calc(var(--left1) + var(--semi) * 6);
+  --left7: calc(var(--left1) + var(--semi) * 7);
+  --left8: calc(var(--left1) + var(--semi) * 8);
 
   --primary: #060;
   --primary-border: #393;
   --primary-active: #030;
 
-  --size: 50px;
-  --border: 1px solid white;
+  --space: 3px;
+  --col1: calc(var(--left4) - var(--size) - var(--space));
+  --row2: calc(var(--size) + var(--space));
+  --col3: calc(var(--left4) + var(--size) + var(--space));
+  --border: var(--brdr) solid var(--white);
 
   counter-set:
     c1 0
@@ -33,9 +54,6 @@
     c6 0
     c7 0
   ;
-
-  color: var(--light);
-  background-color: var(--dark);
 }
 
 body {
@@ -45,6 +63,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  color: var(--light);
+  background-color: var(--dark);
 }
 
 
@@ -68,9 +89,9 @@ div.buttons .primary {
 
 button,
 .button {
-  border: 1px outset var(--mid);
-  border-radius: var(--gap);
-  padding: var(--gap);
+  border: var(--brdr) outset var(--mid);
+  border-radius: var(--pad);
+  padding: var(--pad);
 }
 
 button:not(:disabled),
@@ -80,18 +101,11 @@ button:not(:disabled),
 
 button:hover,
 .button:hover {
-  color: #fff;
+  color: var(--white);
 }
 
 button:hover:active,
 .button:hover:active {
-  border-style: inset;
-  background-color: #000;
-}
-
-button.pressed,
-.button.pressed {
-  color: #fff;
   border-style: inset;
   background-color: #000;
 }
@@ -111,10 +125,10 @@ button.primary:active:hover,
 
 main {
   position: relative;
-  width: 300px;
-  height: 150px;
-  border: 1px solid #fff;
-  border-radius: 8px;
+  width: var(--main);
+  height: var(--half);
+  border: var(--brdr) solid var(--white);
+  border-radius: var(--pad);
   box-sizing: border-box;
   background-color: var(--bg);
   overflow: hidden;
@@ -148,7 +162,6 @@ main {
   label {
     position: absolute;
     top: 0;
-    --size: 32px;
     width: var(--size);
     height: var(--size);
     font-size: var(--size);
@@ -156,30 +169,28 @@ main {
     text-align: center;
     border: var(--border);
     background-color: var(--bg);
+    box-sizing: border-box;
   }
 
-  label.a {
-    left: 40px;
-  }
-
-  label.i {
-    left: 80px;
-  }
-
-  label.n {
-    left: 120px;
-  }
-
+  label.a,
   label.r {
-    left: 160px;
+    left: var(--col1);
   }
 
+  label.i,
   label.s {
-    left: 200px;
+    left: var(--left4);
   }
 
+  label.n,
   label.t {
-    left: 240px;
+    left: var(--col3);
+  }
+
+  label.r,
+  label.s,
+  label.t {
+    top: var(--row2);
   }
 }
 
@@ -230,14 +241,16 @@ main:has([id|=t]:checked) .t {
   position: absolute;
   bottom: 0;
   left: -99vw;
-  display: inline-block;
-
   width: var(--size);
   height: var(--size);
-  background-color: #f006;
+  text-align: right;
+  line-height: 0.9em;
+  color: var(--cross);
+  background-color: var(--mask);
 }
 
 
+/* Non-starter letters */
 .level-1 .n,
 .level-1 .r,
 .level-1 .s,
@@ -246,6 +259,7 @@ main:has([id|=t]:checked) .t {
   color: var(--mid);
   border-color: var(--mid);
 }
+
 
 /* CHOSEN LETTERS  */
 /* .level-1: A or I */
@@ -258,7 +272,7 @@ main {
     }
 
     [for=undo-1] {
-      left: 124px;
+      left: var(--left4);
     }
 
     .level-2 .i,
@@ -274,12 +288,12 @@ main {
         width: var(--size);
         border: var(--border);
       }
-
-      [for=undo-1] {
+      
+      [for|=undo] {
         left: -999vw;
       }
       [for=undo-2] {
-        left: 149px;
+        left: var(--left5);
       }
 
       .level-3 .s { /* invalid */
@@ -334,13 +348,11 @@ main {
               }
             }
 
-            [for=undo-1],
-            [for=undo-2],
-            [for=undo-3] {
+            [for|=undo] {
               left: -999vw;
             }
             [for=undo-4] {
-              left: 149px;
+              left: var(--left5);
             }
 
             &:has(.level-5 .s :checked) { /* RAINS .. trains */
@@ -350,14 +362,11 @@ main {
                 border: var(--border);
               }
 
-              [for=undo-1],
-              [for=undo-2],
-              [for=undo-3],
-              [for=undo-4] {
+              [for|=undo] {
                 left: -999vw;
               }
               [for=undo-5] {
-                left: 224px;
+                left: var(--left8);
               }
 
               &:has(.level-6 .t :checked) { /* TRAINS */
@@ -367,11 +376,7 @@ main {
                   border: var(--border);
                 }
 
-                [for=undo-1],
-                [for=undo-2],
-                [for=undo-3],
-                [for=undo-4],
-                [for=undo-5] {
+                [for|=undo] {
                   left: -999vw;
                 }
               }
@@ -384,15 +389,12 @@ main {
                 border: var(--border);
               }
 
-              [for=undo-1],
-              [for=undo-2],
-              [for=undo-3],
-              [for=undo-4] {
+              [for|=undo] {
                 left: -999vw;
               }
 
               [for=undo-5] {
-                left: 24px;
+                left: var(--left1);
               }
 
               &:has(.level-6 .s :checked) { /* TRAIN .. strain */
@@ -402,11 +404,7 @@ main {
                   border: var(--border);
                 }
 
-                [for=undo-1],
-                [for=undo-2],
-                [for=undo-3],
-                [for=undo-4],
-                [for=undo-5] {
+                [for|=undo] {
                   left: -999vw;
                 }
               }
@@ -420,13 +418,11 @@ main {
               border: var(--border);
             }
 
-            [for=undo-1],
-            [for=undo-2],
-            [for=undo-3] {
+            [for|=undo] {
               left: -999vw;
             }
             [for=undo-4] {
-              left: 199px;
+              left: var(--left7);
             }
 
             .level-5 .i { /* invalid */
@@ -442,14 +438,11 @@ main {
                 border: var(--border);
               }
 
-              [for=undo-1],
-              [for=undo-2],
-              [for=undo-3],
-              [for=undo-4] {
+              [for|=undo] {
                 left: -999vw;
               }
               [for=undo-5] {
-                left: 224px;
+                left: var(--left8);
               }
 
               .level-6 .i { /* invalid */
@@ -468,18 +461,33 @@ main {
             border: var(--border);
           }
 
-          [for=undo-1],
-          [for=undo-2] {
+          [for|=undo] {
             left: -999vw;
           }
           [for=undo-3] {
-            left: 174px;
+            left: var(--left6);
           }
 
-          .i { /* invalid at all coming levels */
-            pointer-events: none;
-            color: var(--mid);
-            border-color: var(--mid);
+          &:has(.level-4 .i :checked) { /* ANTI */
+            p span:nth-child(7)::after {
+              counter-set: c7 2;
+              width: var(--size);
+              border: var(--border);
+            }
+
+            [for|=undo] {
+              left: -999vw;
+            }
+            [for=undo-4] {
+              left: var(--left7);
+            }
+
+            .level-5 .r,
+            .level-5 .s { /* invalid */
+              pointer-events: none;
+              color: var(--mid);
+              border-color: var(--mid);
+            }
           }
 
           &:has(.level-4 .r :checked) { /* RANT .. rants*/
@@ -489,13 +497,17 @@ main {
               border: var(--border);
             }
 
-            [for=undo-1],
-            [for=undo-2],
-            [for=undo-3] {
+            [for|=undo] {
               left: -999vw;
             }
             [for=undo-4] {
-              left: 49px;
+              left: var(--left2);
+            }
+
+            .i { /* invalid at all coming levels */
+              pointer-events: none;
+              color: var(--mid);
+              border-color: var(--mid);
             }
 
             &:has(.level-5 .s :checked) { /* RANTS */
@@ -505,14 +517,11 @@ main {
                 border: var(--border);
               }
 
-              [for=undo-1],
-              [for=undo-2],
-              [for=undo-3],
-              [for=undo-4] {
+              [for|=undo] {
                 left: -999vw;
               }
               [for=undo-5] {
-                left: 224px;
+                left: var(--left8);
               }
             }
           }
@@ -524,13 +533,17 @@ main {
               border: var(--border);
             }
 
-            [for=undo-1],
-            [for=undo-2],
-            [for=undo-3] {
+            [for|=undo] {
               left: -999vw;
             }
             [for=undo-4] {
-              left: 199px;
+              left: var(--left7);
+            }
+
+            .i { /* invalid at all coming levels */
+              pointer-events: none;
+              color: var(--mid);
+              border-color: var(--mid);
             }
 
             &:has(.level-5 .r :checked) { /* RANTS */
@@ -540,32 +553,22 @@ main {
                 border: var(--border);
               }
 
-              [for=undo-1],
-              [for=undo-2],
-              [for=undo-3],
-              [for=undo-4] {
+              [for|=undo] {
                 left: -999vw;
               }
               [for=undo-5] {
-                left: 24px;
-              }
-
-              .level-6 .i {
-                /* not RANTS + I */
-                pointer-events: none;
-                opacity: var(--dim);
+                left: var(--left1);
               }
             }
           }
         }
 
-        [for=undo-1],
-        [for=undo-2] {
+        [for|=undo] {
           left: -999vw;
         }
 
         [for=undo-3] {
-          left: 74px;
+          left: var(--left3);
         }
       }
     }
@@ -576,12 +579,11 @@ main {
         width: var(--size);
         border: var(--border);
       }
-
-      [for=undo-1] {
+      [for|=undo] {
         left: -999vw;
       }
       [for=undo-2] {
-        left: 149px;
+        left: var(--left5);
       }
 
       .level-3 .i,
@@ -600,12 +602,11 @@ main {
         width: var(--size);
         border: var(--border);
       }
-
-      [for=undo-1] {
+[for|=undo] {
         left: -999vw;
       }
       [for=undo-2] {
-        left: 149px;
+        left: var(--left5);
       }
 
       .level-3 .i { /* invalid */
@@ -629,12 +630,11 @@ main {
             }
           }
 
-          [for=undo-1],
-          [for=undo-2] {
+          [for|=undo] {
             left: -999vw;
           }
           [for=undo-3] {
-            left: 124px;
+            left: var(--left4);
           }
 
           &:has(.level-4 .i :checked) { /* ANTI */
@@ -644,13 +644,11 @@ main {
               border: var(--border);
             }
 
-            [for=undo-1],
-            [for=undo-2],
-            [for=undo-3] {
+            [for|=undo] {
               left: -999vw;
             }
             [for=undo-4] {
-              left: 199px;
+              left: var(--left7);
             }
 
             .level-5 .r,
@@ -668,13 +666,11 @@ main {
               border: var(--border);
             }
 
-            [for=undo-1],
-            [for=undo-2],
-            [for=undo-3] {
+            [for|=undo] {
               left: -999vw;
             }
             [for=undo-4] {
-              left: 49px;
+              left: var(--left2);
             }
 
             .i { /* invalid for all coming levels*/
@@ -690,14 +686,11 @@ main {
                 border: var(--border);
               }
 
-              [for=undo-1],
-              [for=undo-2],
-              [for=undo-3],
-              [for=undo-4] {
+              [for|=undo] {
                 left: -999vw;
               }
               [for=undo-5] {
-                left: 224px;
+                left: var(--left8);
               }
             }
           }
@@ -709,13 +702,11 @@ main {
               border: var(--border);
             }
 
-            [for=undo-1],
-            [for=undo-2],
-            [for=undo-3] {
+            [for|=undo] {
               left: -999vw;
             }
             [for=undo-4] {
-              left: 199px;
+              left: var(--left7);
             }
 
             .i { /* invalid for all coming levels*/
@@ -731,27 +722,24 @@ main {
                 border: var(--border);
               }
 
-              [for=undo-1],
-              [for=undo-2],
-              [for=undo-3],
-              [for=undo-4] {
+              [for|=undo] {
                 left: -999vw;
               }
               [for=undo-5] {
-                left: 24px;
+                left: var(--left1);
               }
             }
           }
         }
 
-        [for=undo-1],
-        [for=undo-2] {
+        [for|=undo] {
           left: -999vw;
         }
 
         [for=undo-3] {
-          left: 74px;
+          left: var(--left3);
         }
+
         &:has(.level-3 .r :checked) { /* RAT .. rant, rants, rats, rants */
           p span:nth-child(3)::after {
             counter-set: c3 4;
@@ -759,12 +747,11 @@ main {
             border: var(--border);
           }
 
-          [for=undo-1],
-          [for=undo-2] {
+          [for|=undo] {
             left: -999vw;
           }
           [for=undo-3] {
-            left: 74px;
+            left: var(--left3);
           }
 
           .i { /* invalid for all coming levels */
@@ -787,13 +774,11 @@ main {
               }
             }
 
-            [for=undo-1],
-            [for=undo-2],
-            [for=undo-3] {
+            [for|=undo] {
               left: -999vw;
             }
             [for=undo-4] {
-              left: 149px;
+              left: var(--left5);
             }
 
             &:has(.level-5 .s :checked) { /* RANTS */
@@ -803,14 +788,11 @@ main {
                 border: var(--border);
               }
 
-              [for=undo-1],
-              [for=undo-2],
-              [for=undo-3],
-              [for=undo-4] {
+              [for|=undo] {
                 left: -999vw;
               }
               [for=undo-5] {
-                left: 224px;
+                left: var(--left8);
               }
             }
           }
@@ -822,13 +804,11 @@ main {
               border: var(--border);
             }
 
-            [for=undo-1],
-            [for=undo-2],
-            [for=undo-3] {
+            [for|=undo] {
               left: -999vw;
             }
             [for=undo-4] {
-              left: 199px;
+              left: var(--left7);
             }
 
             .i { /* invalid for all coming levels */
@@ -860,7 +840,7 @@ main {
                 left: -999vw;
               }
               [for=undo-5] {
-                left: 124px;
+                left: var(--left4);
               }
 
               .i { /* invalid for all coming levels */
@@ -888,12 +868,11 @@ main {
           }
         }
 
-        [for=undo-1],
-        [for=undo-2] {
+        [for|=undo] {
           left: -999vw;
         }
         [for=undo-3] {
-          left: 74px;
+          left: var(--left3);
         }
       }
     }
@@ -907,7 +886,7 @@ main {
     }
 
     [for=undo-1] {
-      left: 124px;
+      left: var(--left4);
     }
 
     .a,
@@ -923,12 +902,11 @@ main {
         width: var(--size);
         border: var(--border);
       }
-
-      [for=undo-1] {
+[for|=undo] {
         left: -999vw;
       }
       [for=undo-2] {
-        left: 149px;
+        left: var(--left5);
       }
 
       &:has(.level-3 > label [id]:checked) {
@@ -947,13 +925,11 @@ main {
               border: var(--border);
             }
 
-            [for=undo-1],
-            [for=undo-2],
-            [for=undo-3] {
+            [for|=undo] {
               left: -999vw;
             }
             [for=undo-4] {
-              left: 199px;
+              left: var(--left7);
             }
           }
         }
@@ -972,13 +948,12 @@ main {
           }
         }
 
-        [for=undo-1],
-        [for=undo-2] {
+        [for|=undo] {
           left: -999vw;
         }
 
         [for=undo-3] {
-          left: 74px;
+          left: var(--left3);
         }
       }
     }
@@ -989,12 +964,11 @@ main {
         width: var(--size);
         border: var(--border);
       }
-
-      [for=undo-1] {
+[for|=undo] {
         left: -999vw;
       }
       [for=undo-2] {
-        left: 149px;
+        left: var(--left5);
       }
 
       .n,
@@ -1012,12 +986,11 @@ main {
         width: var(--size);
         border: var(--border);
       }
-
-      [for=undo-1] {
+[for|=undo] {
         left: -999vw;
       }
       [for=undo-2] {
-        left: 149px;
+        left: var(--left5);
       }
 
       &:has(.level-3 > label [id]:checked) {
@@ -1037,13 +1010,11 @@ main {
               border: var(--border);
             }
 
-            [for=undo-1],
-            [for=undo-2],
-            [for=undo-3] {
+            [for|=undo] {
               left: -999vw;
             }
             [for=undo-4] {
-              left: 199px;
+              left: var(--left7);
             }
           }
         }
@@ -1061,13 +1032,12 @@ main {
           }
         }
 
-        [for=undo-1],
-        [for=undo-2] {
+        [for|=undo] {
           left: -999vw;
         }
 
         [for=undo-3] {
-          left: 74px;
+          left: var(--left3);
         }
       }
     }
@@ -1077,13 +1047,14 @@ main {
 p#word {
   position: absolute;
   width: 100%;
-  margin: 0;
+  margin: 0 var(--brdr);
   bottom: 0;
 
   display: flex;
   justify-content: center;
 
   font-size: var(--size);
+  background-color: var(--dark);
   border-top: var(--border);
 }
 
