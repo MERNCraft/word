@@ -17,11 +17,14 @@
   --dark:  #222;
   --cross: #900;
   --bg:    #030;
+  --plain: #060;
+  --hover: #090;
 
   --main:  300px;
   --half:  150px;
   --pad:     8px;
   --brdr:    1px;
+  --font:    24px;
 
   --size:   44px;
   --semi:  calc(var(--size) / 2);
@@ -35,15 +38,15 @@
   --left7: calc(var(--left1) + var(--semi) * 7);
   --left8: calc(var(--left1) + var(--semi) * 8);
 
-  --primary: #060;
-  --primary-border: #393;
-  --primary-active: #030;
-
   --space: 3px;
   --col1: calc(var(--left4) - var(--size) - var(--space));
   --row2: calc(var(--size) + var(--space));
   --col3: calc(var(--left4) + var(--size) + var(--space));
   --border: var(--brdr) solid var(--white);
+
+  --win:     "You scored ";
+  --ner:     " points!";
+  --message: "You ran out of time!";
 
   counter-set:
     c1 0
@@ -56,6 +59,7 @@
     score 0
     countdown 100
   ;
+
 }
 
 body {
@@ -68,60 +72,6 @@ body {
 
   color: var(--light);
   background-color: var(--dark);
-}
-
-
-html {
-/* BUTTONS / BUTTONS / BUTTONS / BUTTONS / BUTTONS / BUTTONS */
-
-div.buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-div.buttons button {
-  flex: 1
-}
-
-div.buttons .primary {
-  margin-left: 0.5em;
-  flex: 2
-}
-
-
-button,
-.button {
-  border: var(--brdr) outset var(--mid);
-  border-radius: var(--pad);
-  padding: var(--pad);
-}
-
-button:not(:disabled),
-.button:not(:disabled) {
-  cursor: pointer;
-}
-
-button:hover,
-.button:hover {
-  color: var(--white);
-}
-
-button:hover:active,
-.button:hover:active {
-  border-style: inset;
-  background-color: #000;
-}
-
-button.primary,
-.button.primary {
-  background-color: var(--primary);
-  border-color: var(--primary-border);
-}
-
-button.primary:active:hover,
-.button.primary:active:hover {
-  background-color: var(--primary-active);
-}
 }
 
 
@@ -139,25 +89,25 @@ main {
 
 /* AVAILABLE LETTERS */
 
-[class|=level] {
+[class|=layer] {
   input {
     position: absolute;
     left: -999vw;
     /* top: -14em; */
   }
-  /* &.level-5 input {
+  /* &.layer-5 input {
     top: -12em;
   }
-  &.level-4 input {
+  &.layer-4 input {
     top: -10em;
   }
-  &.level-3 input {
+  &.layer-3 input {
     top: -8em;
   }
-  &.level-2 input {
+  &.layer-2 input {
     top: -6em;
   }
-  &.level-1 input {
+  &.layer-1 input {
     top: -4em;
   } */
 
@@ -199,8 +149,8 @@ main {
 
 /* LETTERS THAT CAN BE CHOSEN */
 
-/* Allow selection only at the current level */
-[class|=level]:not(:has(> label :checked)) {
+/* Allow selection only at the current layer */
+[class|=layer]:not(:has(> label :checked)) {
   position: absolute;
   top: 0;
   left: 0;
@@ -208,7 +158,7 @@ main {
   bottom: 0;
 }
 
-/* Hide a letter that has been selected at all levels */
+/* Hide a letter that has been selected at all layers */
 main:has([id|=a]:checked) .a,
 main:has([id|=i]:checked) .i,
 main:has([id|=n]:checked) .n,
@@ -219,8 +169,8 @@ main:has([id|=t]:checked) .t {
 }
 
 
-/* Count div.level-X out, if it has a letter checked */
-[class|=level]:has(> [id|=undo]:not(:checked)) {
+/* Count div.layer-X out, if it has a letter checked */
+[class|=layer]:has(> [id|=undo]:not(:checked)) {
   pointer-events: none;
   counter-increment: score;
 }
@@ -241,10 +191,10 @@ main:has([id|=t]:checked) .t {
 
 
 /* Non-starter letters */
-.level-1 .n,
-.level-1 .r,
-.level-1 .s,
-.level-1 .t { /* invalid */
+.layer-1 .n,
+.layer-1 .r,
+.layer-1 .s,
+.layer-1 .t { /* invalid */
   pointer-events: none;
   color: var(--mid);
   border-color: var(--mid);
@@ -252,10 +202,10 @@ main:has([id|=t]:checked) .t {
 
 
 /* CHOSEN LETTERS  */
-/* .level-1: A or I */
+/* .layer-1: A or I */
 main {
-  &:has(.level-1 .a :checked) {  /* A */
-    p span:nth-child(4)::after {
+  &:has(.layer-1 .a :checked) {  /* A */
+    p#word span:nth-child(4)::after {
       counter-set: c4 1;
       width: var(--size);
       border: var(--border);
@@ -265,15 +215,15 @@ main {
       left: var(--left4);
     }
 
-    .level-2 .i,
-    .level-2 .r { /* invalid */
+    .layer-2 .i,
+    .layer-2 .r { /* invalid */
       pointer-events: none;
       color: var(--mid);
       border-color: var(--mid);
     }
 
-    &:has(.level-2 .n :checked) { /* AN */
-      p span:nth-child(5)::after {
+    &:has(.layer-2 .n :checked) { /* AN */
+      p#word span:nth-child(5)::after {
         counter-set: c5 3;
         width: var(--size);
         border: var(--border);
@@ -286,46 +236,46 @@ main {
         left: var(--left5);
       }
 
-      .level-3 .s { /* invalid */
+      .layer-3 .s { /* invalid */
         pointer-events: none;
         color: var(--mid);
         border-color: var(--mid);
       }
 
-      &:has(.level-3 > label [id]:checked) {
+      &:has(.layer-3 > label [id]:checked) {
         /* [id] added to increase specificity */
-        &:has(.level-3 .i :checked) {
+        &:has(.layer-3 .i :checked) {
           /* IAN */
-          p span:nth-child(3)::after {
+          p#word span:nth-child(3)::after {
             counter-set: c3 2;
             width: var(--size);
             border: var(--border);
           }
 
-          .level-4 .r,
-          .level-4 .s,
-          .level-4 .t { /* invalid */
+          .layer-4 .r,
+          .layer-4 .s,
+          .layer-4 .t { /* invalid */
             pointer-events: none;
             color: var(--mid);
             border-color: var(--mid);
           }
         }
 
-        &:has(.level-3 .r :checked) { /* RAN .. rain, rains, trains, train, strain, rant, rants */
-          p span:nth-child(3)::after {
+        &:has(.layer-3 .r :checked) { /* RAN .. rain, rains, trains, train, strain, rant, rants */
+          p#word span:nth-child(3)::after {
             counter-set: c3 4;
             width: var(--size);
             border: var(--border);
           }
 
-          .level-4 .s { /* invalid */
+          .layer-4 .s { /* invalid */
             pointer-events: none;
             color: var(--mid);
             border-color: var(--mid);
           }
 
-          &:has(.level-4 .i :checked) { /* RAIN .. rains, trains, train, strain */
-            p span {
+          &:has(.layer-4 .i :checked) { /* RAIN .. rains, trains, train, strain */
+            p#word span {
               &:nth-child(5)::after {
                 counter-set: c5 2;
                 width: var(--size);
@@ -345,8 +295,8 @@ main {
               left: var(--left5);
             }
 
-            &:has(.level-5 .s :checked) { /* RAINS .. trains */
-              p span:nth-child(7)::after {
+            &:has(.layer-5 .s :checked) { /* RAINS .. trains */
+              p#word span:nth-child(7)::after {
                 counter-set: c7 5;
                 width: var(--size);
                 border: var(--border);
@@ -359,8 +309,8 @@ main {
                 left: var(--left8);
               }
 
-              &:has(.level-6 .t :checked) { /* TRAINS */
-                p span:nth-child(1)::after {
+              &:has(.layer-6 .t :checked) { /* TRAINS */
+                p#word span:nth-child(1)::after {
                   counter-set: c1 6;
                   width: var(--size);
                   border: var(--border);
@@ -372,8 +322,8 @@ main {
               }
             }
 
-            &:has(.level-5 .t :checked) { /* TRAIN .. strain */
-              p span:nth-child(2)::after {
+            &:has(.layer-5 .t :checked) { /* TRAIN .. strain */
+              p#word span:nth-child(2)::after {
                 counter-set: c2 6;
                 width: var(--size);
                 border: var(--border);
@@ -387,8 +337,8 @@ main {
                 left: var(--left1);
               }
 
-              &:has(.level-6 .s :checked) { /* TRAIN .. strain */
-                p span:nth-child(1)::after {
+              &:has(.layer-6 .s :checked) { /* TRAIN .. strain */
+                p#word span:nth-child(1)::after {
                   counter-set: c1 5;
                   width: var(--size);
                   border: var(--border);
@@ -401,8 +351,8 @@ main {
             }
           }
 
-          &:has(.level-4 .t :checked) { /* RANT .. rants */
-            p span:nth-child(6)::after {
+          &:has(.layer-4 .t :checked) { /* RANT .. rants */
+            p#word span:nth-child(6)::after {
               counter-set: c6 6;
               width: var(--size);
               border: var(--border);
@@ -415,14 +365,14 @@ main {
               left: var(--left7);
             }
 
-            .level-5 .i { /* invalid */
+            .layer-5 .i { /* invalid */
               pointer-events: none;
               color: var(--mid);
               border-color: var(--mid);
             }
 
-            &:has(.level-5 .s :checked) { /* RANTS */
-              p span:nth-child(7)::after {
+            &:has(.layer-5 .s :checked) { /* RANTS */
+              p#word span:nth-child(7)::after {
                 counter-set: c7 5;
                 width: var(--size);
                 border: var(--border);
@@ -435,7 +385,7 @@ main {
                 left: var(--left8);
               }
 
-              .level-6 .i { /* invalid */
+              .layer-6 .i { /* invalid */
                 pointer-events: none;
                 color: var(--mid);
                 border-color: var(--mid);
@@ -444,8 +394,8 @@ main {
           }
         }
 
-        &:has(.level-3 .t :checked) { /* ANT .. rant, rants, ants, rants */
-          p span:nth-child(6)::after {
+        &:has(.layer-3 .t :checked) { /* ANT .. rant, rants, ants, rants */
+          p#word span:nth-child(6)::after {
             counter-set: c6 6;
             width: var(--size);
             border: var(--border);
@@ -458,8 +408,8 @@ main {
             left: var(--left6);
           }
 
-          &:has(.level-4 .i :checked) { /* ANTI */
-            p span:nth-child(7)::after {
+          &:has(.layer-4 .i :checked) { /* ANTI */
+            p#word span:nth-child(7)::after {
               counter-set: c7 2;
               width: var(--size);
               border: var(--border);
@@ -472,16 +422,16 @@ main {
               left: var(--left7);
             }
 
-            .level-5 .r,
-            .level-5 .s { /* invalid */
+            .layer-5 .r,
+            .layer-5 .s { /* invalid */
               pointer-events: none;
               color: var(--mid);
               border-color: var(--mid);
             }
           }
 
-          &:has(.level-4 .r :checked) { /* RANT .. rants*/
-            p span:nth-child(3)::after {
+          &:has(.layer-4 .r :checked) { /* RANT .. rants*/
+            p#word span:nth-child(3)::after {
               counter-set: c3 4;
               width: var(--size);
               border: var(--border);
@@ -494,14 +444,14 @@ main {
               left: var(--left2);
             }
 
-            .i { /* invalid at all coming levels */
+            .i { /* invalid at all coming layers */
               pointer-events: none;
               color: var(--mid);
               border-color: var(--mid);
             }
 
-            &:has(.level-5 .s :checked) { /* RANTS */
-              p span:nth-child(7)::after {
+            &:has(.layer-5 .s :checked) { /* RANTS */
+              p#word span:nth-child(7)::after {
                 counter-set: c7 5;
                 width: var(--size);
                 border: var(--border);
@@ -516,8 +466,8 @@ main {
             }
           }
 
-          &:has(.level-4 .s :checked) { /* ANTS .. rants*/
-            p span:nth-child(7)::after {
+          &:has(.layer-4 .s :checked) { /* ANTS .. rants*/
+            p#word span:nth-child(7)::after {
               counter-set: c7 5;
               width: var(--size);
               border: var(--border);
@@ -530,14 +480,14 @@ main {
               left: var(--left7);
             }
 
-            .i { /* invalid at all coming levels */
+            .i { /* invalid at all coming layers */
               pointer-events: none;
               color: var(--mid);
               border-color: var(--mid);
             }
 
-            &:has(.level-5 .r :checked) { /* RANTS */
-              p span:nth-child(2)::after {
+            &:has(.layer-5 .r :checked) { /* RANTS */
+              p#word span:nth-child(2)::after {
                 counter-set: c2 4;
                 width: var(--size);
                 border: var(--border);
@@ -563,8 +513,8 @@ main {
       }
     }
 
-    &:has(.level-2 .s :checked) { /* AS */
-      p span:nth-child(5)::after {
+    &:has(.layer-2 .s :checked) { /* AS */
+      p#word span:nth-child(5)::after {
         counter-set: c5 5;
         width: var(--size);
         border: var(--border);
@@ -576,18 +526,18 @@ main {
         left: var(--left5);
       }
 
-      .level-3 .i,
-      .level-3 .n,
-      .level-3 .r,
-      .level-3 .t { /* invalid */
+      .layer-3 .i,
+      .layer-3 .n,
+      .layer-3 .r,
+      .layer-3 .t { /* invalid */
         pointer-events: none;
         color: var(--mid);
         border-color: var(--mid);
       }
     }
 
-    &:has(.level-2 .t :checked) { /* AT .. ant, anti, rant, rants, ants, rants */
-      p span:nth-child(5)::after {
+    &:has(.layer-2 .t :checked) { /* AT .. ant, anti, rant, rants, ants, rants */
+      p#word span:nth-child(5)::after {
         counter-set: c5 6;
         width: var(--size);
         border: var(--border);
@@ -599,15 +549,15 @@ main {
         left: var(--left5);
       }
 
-      .level-3 .i { /* invalid */
+      .layer-3 .i { /* invalid */
         pointer-events: none;
         color: var(--mid);
         border-color: var(--mid);
       }
 
-      &:has(.level-3 > label [id]:checked) {
-        &:has(.level-3 .n :checked) { /* ANT .. anti, rant, rants, ants, rants */
-          p span {
+      &:has(.layer-3 > label [id]:checked) {
+        &:has(.layer-3 .n :checked) { /* ANT .. anti, rant, rants, ants, rants */
+          p#word span {
             &:nth-child(5)::after {
               counter-set: c5 3;
               width: var(--size);
@@ -627,8 +577,8 @@ main {
             left: var(--left4);
           }
 
-          &:has(.level-4 .i :checked) { /* ANTI */
-            p span:nth-child(7)::after {
+          &:has(.layer-4 .i :checked) { /* ANTI */
+            p#word span:nth-child(7)::after {
               counter-set: c7 2;
               width: var(--size);
               border: var(--border);
@@ -641,16 +591,16 @@ main {
               left: var(--left7);
             }
 
-            .level-5 .r,
-            .level-5 .s { /* invalid */
+            .layer-5 .r,
+            .layer-5 .s { /* invalid */
               pointer-events: none;
               color: var(--mid);
               border-color: var(--mid);
             }
           }
 
-          &:has(.level-4 .r :checked) { /* RANT .. rants*/
-            p span:nth-child(3)::after {
+          &:has(.layer-4 .r :checked) { /* RANT .. rants*/
+            p#word span:nth-child(3)::after {
               counter-set: c3 4;
               width: var(--size);
               border: var(--border);
@@ -663,14 +613,14 @@ main {
               left: var(--left2);
             }
 
-            .i { /* invalid for all coming levels*/
+            .i { /* invalid for all coming layers*/
               pointer-events: none;
               color: var(--mid);
               border-color: var(--mid);
             }
 
-            &:has(.level-5 .s :checked) { /* RANTS */
-              p span:nth-child(7)::after {
+            &:has(.layer-5 .s :checked) { /* RANTS */
+              p#word span:nth-child(7)::after {
                 counter-set: c7 5;
                 width: var(--size);
                 border: var(--border);
@@ -685,8 +635,8 @@ main {
             }
           }
 
-          &:has(.level-4 .s :checked) { /* ANTS .. rants*/
-            p span:nth-child(7)::after {
+          &:has(.layer-4 .s :checked) { /* ANTS .. rants*/
+            p#word span:nth-child(7)::after {
               counter-set: c7 5;
               width: var(--size);
               border: var(--border);
@@ -699,14 +649,14 @@ main {
               left: var(--left7);
             }
 
-            .i { /* invalid for all coming levels*/
+            .i { /* invalid for all coming layers*/
               pointer-events: none;
               color: var(--mid);
               border-color: var(--mid);
             }
 
-            &:has(.level-5 .r :checked) { /* RANTS */
-              p span:nth-child(2)::after {
+            &:has(.layer-5 .r :checked) { /* RANTS */
+              p#word span:nth-child(2)::after {
                 counter-set: c2 4;
                 width: var(--size);
                 border: var(--border);
@@ -730,8 +680,8 @@ main {
           left: var(--left3);
         }
 
-        &:has(.level-3 .r :checked) { /* RAT .. rant, rants, rats, rants */
-          p span:nth-child(3)::after {
+        &:has(.layer-3 .r :checked) { /* RAT .. rant, rants, rats, rants */
+          p#word span:nth-child(3)::after {
             counter-set: c3 4;
             width: var(--size);
             border: var(--border);
@@ -744,14 +694,14 @@ main {
             left: var(--left3);
           }
 
-          .i { /* invalid for all coming levels */
+          .i { /* invalid for all coming layers */
             pointer-events: none;
             color: var(--mid);
             border-color: var(--mid);
           }
 
-          &:has(.level-4 .n :checked) { /* RANT .. rants */
-            p span {
+          &:has(.layer-4 .n :checked) { /* RANT .. rants */
+            p#word span {
               &:nth-child(5)::after {
                 counter-set: c5 3;
                 width: var(--size);
@@ -771,8 +721,8 @@ main {
               left: var(--left5);
             }
 
-            &:has(.level-5 .s :checked) { /* RANTS */
-              p span:nth-child(7)::after {
+            &:has(.layer-5 .s :checked) { /* RANTS */
+              p#word span:nth-child(7)::after {
                 counter-set: c7 5;
                 width: var(--size);
                 border: var(--border);
@@ -787,8 +737,8 @@ main {
             }
           }
 
-          &:has(.level-4 .s :checked) { /* RATS .. rants */
-            p span:nth-child(6)::after {
+          &:has(.layer-4 .s :checked) { /* RATS .. rants */
+            p#word span:nth-child(6)::after {
               counter-set: c6 5;
               width: var(--size);
               border: var(--border);
@@ -801,14 +751,14 @@ main {
               left: var(--left7);
             }
 
-            .i { /* invalid for all coming levels */
+            .i { /* invalid for all coming layers */
               pointer-events: none;
               color: var(--mid);
               border-color: var(--mid);
             }
 
-            &:has(.level-5 .n :checked) { /* RANTS */
-              p span {
+            &:has(.layer-5 .n :checked) { /* RANTS */
+              p#word span {
                 :nth-child(5)::after {
                   counter-set: c5 3;
                   width: var(--size);
@@ -833,7 +783,7 @@ main {
                 left: var(--left4);
               }
 
-              .i { /* invalid for all coming levels */
+              .i { /* invalid for all coming layers */
                 pointer-events: none;
                 color: var(--mid);
                 border-color: var(--mid);
@@ -842,16 +792,16 @@ main {
           }
         }
 
-        &:has(.level-3 .s :checked) { /* SAT */
-          p span:nth-child(3)::after {
+        &:has(.layer-3 .s :checked) { /* SAT */
+          p#word span:nth-child(3)::after {
             counter-set: c3 5;
             width: var(--size);
             border: var(--border);
           }
 
-          .level-4 .i,
-          .level-4 .n,
-          .level-4 .r { /* invalid */
+          .layer-4 .i,
+          .layer-4 .n,
+          .layer-4 .r { /* invalid */
             pointer-events: none;
             color: var(--mid);
             border-color: var(--mid);
@@ -868,8 +818,8 @@ main {
     }
   }
 
-  &:has(.level-1 .i :checked) { /* I .. in, sin, tin, tins */
-    p span:nth-child(5)::after {
+  &:has(.layer-1 .i :checked) { /* I .. in, sin, tin, tins */
+    p#word span:nth-child(5)::after {
       counter-set: c5 2;
       width: var(--size);
       border: var(--border);
@@ -880,14 +830,14 @@ main {
     }
 
     .a,
-    .r { /* invalid for all coming levels */
+    .r { /* invalid for all coming layers */
       pointer-events: none;
       color: var(--mid);
       border-color: var(--mid);
     }
 
-    &:has(.level-2 .n :checked) { /* IN .. sin, tin, tins */
-      p span:nth-child(6)::after {
+    &:has(.layer-2 .n :checked) { /* IN .. sin, tin, tins */
+      p#word span:nth-child(6)::after {
         counter-set: c6 3;
         width: var(--size);
         border: var(--border);
@@ -899,17 +849,17 @@ main {
         left: var(--left5);
       }
 
-      &:has(.level-3 > label [id]:checked) {
+      &:has(.layer-3 > label [id]:checked) {
         /* [id] added to increase specificity */
-        &:has(.level-3 .t :checked) { /* TIN .. tins */
-          p span:nth-child(4)::after {
+        &:has(.layer-3 .t :checked) { /* TIN .. tins */
+          p#word span:nth-child(4)::after {
             counter-set: c4 6;
             width: var(--size);
             border: var(--border);
           }
 
-          &:has(.level-4 .s :checked) { /* TINS */
-            p span:nth-child(7)::after {
+          &:has(.layer-4 .s :checked) { /* TINS */
+            p#word span:nth-child(7)::after {
               counter-set: c7 5;
               width: var(--size);
               border: var(--border);
@@ -924,14 +874,14 @@ main {
           }
         }
 
-        &:has(.level-3 .s :checked) { /* SIN */
-          p span:nth-child(4)::after {
+        &:has(.layer-3 .s :checked) { /* SIN */
+          p#word span:nth-child(4)::after {
             counter-set: c4 5;
             width: var(--size);
             border: var(--border);
           }
 
-          .t { /* invalid for all coming levels */
+          .t { /* invalid for all coming layers */
             pointer-events: none;
             color: var(--mid);
             border-color: var(--mid);
@@ -948,8 +898,8 @@ main {
       }
     }
 
-    &:has(.level-2 .s :checked) { /* IS */
-      p span:nth-child(6)::after {
+    &:has(.layer-2 .s :checked) { /* IS */
+      p#word span:nth-child(6)::after {
         counter-set: c6 5;
         width: var(--size);
         border: var(--border);
@@ -962,16 +912,16 @@ main {
       }
 
       .n,
-      .t { /* invalid for all levels */
+      .t { /* invalid for all layers */
         pointer-events: none;
         color: var(--mid);
         border-color: var(--mid);
       }
     }
 
-    &:has(.level-2 .t :checked) {
+    &:has(.layer-2 .t :checked) {
       /* IT */
-      p span:nth-child(6)::after {
+      p#word span:nth-child(6)::after {
         counter-set: c6 6;
         width: var(--size);
         border: var(--border);
@@ -983,18 +933,18 @@ main {
         left: var(--left5);
       }
 
-      &:has(.level-3 > label [id]:checked) {
+      &:has(.layer-3 > label [id]:checked) {
         /* [id] added to increase specificity */
-        &:has(.level-3 .n :checked) { /* NIT .. nits */
-          p span:nth-child(4)::after {
+        &:has(.layer-3 .n :checked) { /* NIT .. nits */
+          p#word span:nth-child(4)::after {
             counter-set: c4 3;
             width: var(--size);
             border: var(--border);
           }
 
-          &:has(.level-4 .s :checked) {
+          &:has(.layer-4 .s :checked) {
             /* NITS */
-            p span:nth-child(7)::after {
+            p#word span:nth-child(7)::after {
               counter-set: c7 5;
               width: var(--size);
               border: var(--border);
@@ -1008,14 +958,14 @@ main {
             }
           }
         }
-        &:has(.level-3 .s :checked) { /* SIT */
-          p span:nth-child(4)::after {
+        &:has(.layer-3 .s :checked) { /* SIT */
+          p#word span:nth-child(4)::after {
             counter-set: c4 5;
             width: var(--size);
             border: var(--border);
           }
 
-          .n { /* invalid for all levels */
+          .n { /* invalid for all layers */
             pointer-events: none;
             color: var(--mid);
             border-color: var(--mid);
@@ -1049,29 +999,17 @@ p#word {
   border-top: var(--border);
 }
 
-p span {
-  height: var(--size);
-  text-align: center;
-}
-
-p span::after {
-  display: inline-block;
-  width: var(--size);
-  height: var(--size);
-
-  border: var(--border);
-  box-sizing: border-box;
-}
-
 @counter-style letters {
   system: cyclic;
   symbols: "A" "I" "N" "R" "S" "T" "";
 }
 
-p span {
+p#word span {
+  text-align: center;
+
   &::after {
-    width: 0;
-    border: none;
+    display: inline-block;
+    box-sizing: border-box;
   }
 
   &:nth-child(1)::after {
@@ -1104,14 +1042,17 @@ p span {
 }
 
 
-/* Time and Score */
+/* Time, Score and Play Again */
+
+p {
+  font-size: var(--font);
+}
 
 p#time,
 p#score {
   position: absolute;
   width: 75px;
   text-align: center;
-  font-size: 25px;
   margin: 0.65em 0 0;
 
   &::after {
@@ -1134,6 +1075,71 @@ p#score {
 }
 p#score::after {
   content: counter(score);
+}
+
+#game-over {
+  position: absolute;
+  width: var(--main);
+  top: 0;
+  bottom: var(--size);
+  background-color: #030;
+  text-align: center;
+  display: none;
+}
+
+p.message {
+  margin: var(--pad) 0;
+
+  &::before {
+    content: var(--win) counter(score) var(--ner);
+  }
+  &::after {
+    content: var(--message);
+    display: none;
+  }
+}
+
+a.replay {
+  position: absolute;
+  left: var(--left2);
+  right: var(--left2);
+  top: var(--row2);
+  text-align: center;
+  padding: var(--pad) 0;
+  color: var(--light);
+  text-decoration: none;
+  background-color: var(--plain);
+  border: var(--brdr) outset var(--hover);
+  border-radius: var(--pad);
+
+  &:hover {
+    color: var(--white);
+  }
+  
+  &:hover:active {
+    border-style: inset;
+    background-color: var(--bg);
+  }
+}
+
+/* Show the GitHub logo */
+a.github {
+  width: 0;
+  height: 0;
+
+  img {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    width: 32px;
+    height: 32px;
+    filter: grayscale(1);
+    opacity: 0.25;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
 
 @keyframes countdown {
@@ -1239,3 +1245,5 @@ p#score::after {
   99% { counter-increment: countdown  -99; }
  100% { counter-increment: countdown -100; }
 }
+
+
