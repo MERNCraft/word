@@ -7,11 +7,24 @@
     content="width=device-width, initial-scale=1.0">
   <title>Word</title>
   <link rel="stylesheet" href="styles.css">
-  <script defer src="script.js"></script>
 </head>
 <body>
   <main>
     <div class="level-6">
+      <input type="radio" name="level-6" id="undo-6" checked>
+
+      <label class="a">
+        <span class="className">A</span>
+      </label>
+      <label class="i">
+        <span class="className">I</span>
+      </label>
+      <label class="n">
+        <span class="className">N</span>
+      </label>
+      <label class="r">
+        <span class="className">R</span>
+      </label>
       <label class="s">
         <input type="radio" name="level-6" id="s-6">
         <span class="className">S</span>
@@ -22,6 +35,12 @@
       </label>
 
       <div class="level-5">
+        <input type="radio" name="level-5" id="undo-5" checked>
+
+        <label class="r">
+          <input type="radio" name="level-5" id="r-5">
+          <span class="className">R</span>
+        </label>
         <label class="s">
           <input type="radio" name="level-5" id="s-5">
           <span class="className">S</span>
@@ -32,6 +51,8 @@
         </label>
 
         <div class="level-4">
+          <input type="radio" name="level-4" id="undo-4" checked>
+
           <label class="i">
             <input type="radio" name="level-4" id="i-4">
             <span class="className">I</span>
@@ -54,6 +75,13 @@
           </label>
 
           <div class="level-3">
+            <input type="radio" name="level-3" id="undo-3" checked>
+
+            <label class="i">
+              <input type="radio" name="level-3" id="i-3">
+              <span class="className">I</span>
+            </label>
+
             <label class="n">
               <input type="radio" name="level-3" id="n-3">
               <span class="className">N</span>
@@ -72,6 +100,8 @@
             </label>
 
             <div class="level-2">
+              <input type="radio" name="level-2" id="undo-2" checked>
+
               <label class="n">
                 <input type="radio" name="level-2" id="n-2">
                 <span class="className">N</span>
@@ -86,6 +116,8 @@
               </label>
 
               <div class="level-1">
+                <input type="radio" name="level-1" id="undo-1" checked>
+
                 <label class="a">
                   <input type="radio" name="level-1" id="a-1">
                   <span class="className">A</span>
@@ -108,7 +140,15 @@
       <span></span>
       <span></span>
       <span></span>
+      <span></span>
     </p>
+
+    <label for="undo-1"></label>
+    <label for="undo-2"></label>
+    <label for="undo-3"></label>
+    <label for="undo-4"></label>
+    <label for="undo-5"></label>
+    <!-- <label for="undo-1"></label> -->
   </main>
 </body>
 </html>

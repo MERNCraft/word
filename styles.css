@@ -23,12 +23,13 @@
   --border: 1px solid white;
 
   counter-set:
-    u 0
-    v 0
-    w 0
-    x 0
-    y 0
-    z 0
+    c1 0
+    c2 0
+    c3 0
+    c4 0
+    c5 0
+    c6 0
+    c7 0
   ;
 
   color: var(--light);
@@ -192,156 +193,941 @@ main {
 }
 
 /* Hide a letter that has been selected at all levels */
-main:has([id|=a]:checked) [class|=level] :checked .a {
+main:has([id|=a]:checked) .a span {
   display: none
 }
-main:has([id|=i]:checked) [class|=level] :checked .i {
+main:has([id|=i]:checked) .i span {
   display: none
 }
-main:has([id|=n]:checked) [class|=level] :checked .n {
+main:has([id|=n]:checked) .n span {
   display: none
 }
-main:has([id|=r]:checked) [class|=level] :checked .r {
+main:has([id|=r]:checked) .r span {
   display: none
 }
-main:has([id|=s]:checked) [class|=level] :checked .s {
+main:has([id|=s]:checked) .s span {
   display: none
 }
-main:has([id|=t]:checked) [class|=level] :checked .t {
+main:has([id|=t]:checked) .t span {
   display: none
+}
+
+
+/* Hide div.level-X if it has a letter checked */
+[class|=level]:has(> [id|=undo]:not(:checked)) {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+
+/* Undo labels */
+[for|=undo] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+
+  width: var(--size);
+  height: var(--size);
+  background-color: #f006;
 }
 
 
 /* CHOSEN LETTERS  */
 /* .level-1: A or I */
-main:has(.level-1 .a :checked) p span:nth-child(1)::after {
-  counter-set: u 1;
-  width: var(--size);
-  border: var(--border);
-}
-main:has(.level-1 .i :checked) p span:nth-child(1)::after {
-  counter-set: u 2;
-  width: var(--size);
-  border: var(--border);
-}
-
-/* .level-2: N, S or T */
-main:has(.level-2 .n :checked) p span:nth-child(2)::after {
-  counter-set: v 3;
-  width: var(--size);
-  border: var(--border);
-}
-main:has(.level-2 .s :checked) p span:nth-child(2)::after {
-  counter-set: v 5;
-  width: var(--size);
-  border: var(--border);
-}
-main:has(.level-2 .t :checked) p span:nth-child(2)::after {
-  counter-set: v 6;
-  width: var(--size);
-  border: var(--border);
-}
-
-/* .level-3: R|T if AN, R|S if AT
-             S|T if IN, N|S if IT
- */
- /* Only show valid letters at level-3 */
- /* main:has(.level-1 .i :checked):has(.level-2 .n :checked):has(.level-3 .t :checked) p span:nth-child(1)::after {
-
-  counter-set: u 6;
-  width: var(--size);
-  border: var(--border);
- } */
-
- main {
-  &:has(.level-1 .i :checked) {
-    /* IS >> no more letters */
-    &:has(.level-2 .s :checked) .level-3 {
-      .r, .s, .t {
-        display: none;
-      }
+main {
+  &:has(.level-1 .a :checked) {  /* A */
+    p span:nth-child(4)::after {
+      counter-set: c4 1;
+      width: var(--size);
+      border: var(--border);
     }
 
-    /* IN, IS, IT >> no R */
-    .level-3 .r {
-        display: none;
+    [for=undo-1] {
+      bottom: 0;
+      top: auto;
+      left: 124px;
     }
 
-    /* Continue with TIN, SIN */
-    &:has(.level-2 .n :checked) {
-      .level-2 {
-        /* Hide labels which would return to IS or IT */
-        .s, .t {
-          display: none;
-        }
+    &:has(.level-2 .n :checked) { /* AN */
+      p span:nth-child(5)::after {
+        counter-set: c5 3;
+        width: var(--size);
+        border: var(--border);
+      }
+  
+      [for=undo-1] {
+        top: 0;
+        left: 0;
+      } 
+      [for=undo-2] {
+        bottom: 0;
+        top: auto;
+        left: 149px;
       }
 
-      &:has(.level-3 .t :checked) {
-        /* Allow TIN+S */
-        .level-3 .s {
-          display: none;
-        }
-
-        .level-4 .r {
-          pointer-events: none;
-          color: var(--mid);
-          border-color: var(--mid);
-        }
-
-        &:has(.level-4 .s :checked) p span:nth-child(4)::after {
-          /* TINS */
-          counter-set: x 5;
-          width: var(--size);
-          border: var(--border);
-        }
+      .level-3 .s {
+        /* not SAN */
+        pointer-events: none
       }
 
-      &:has(.level-3 > label :checked) {
-        &:has(.level-3 .s :checked) p span:nth-child(1)::after {
-          /* S+IN */
-          counter-set: u 5;
-          width: var(--size);
-          border: var(--border);
-        }
-        &:has(.level-3 .t :checked) p span:nth-child(1)::after {
-          /* T+IN */
-          counter-set: u 6;
-          width: var(--size);
-          border: var(--border);
-        }
-
-        p span {
-          &:nth-child(2)::after {
-            counter-set: v 2;
+      &:has(.level-3 > label [id]:checked) { 
+        /* [id] added to increase specificity */
+        &:has(.level-3 .i :checked) {
+          /* IAN */
+          p span:nth-child(3)::after {
+            counter-set: c3 2;
             width: var(--size);
             border: var(--border);
           }
-          &:nth-child(3)::after {
-            counter-set: w 3;
+
+          .level-4 .r,
+          .level-4 .s,
+          .level-4 .t {
+            /* not IAN + */
+            pointer-events: none
+          }
+        }
+
+        &:has(.level-3 .r :checked) { /* RAN .. rain, rains, trains, train, strain, rant, rants */
+          p span:nth-child(3)::after {
+            counter-set: c3 4;
             width: var(--size);
             border: var(--border);
           }
+
+          .level-4 .s {
+            /* not RAN + S */
+            pointer-events: none
+          }
+
+          &:has(.level-4 .i :checked) { /* RAIN .. rains, trains, train, strain */
+            p span:nth-child(5)::after {
+              counter-set: c5 2;
+              width: var(--size);
+              border: var(--border);
+            }
+            p span:nth-child(6)::after {
+              counter-set: c6 3;
+              width: var(--size);
+              border: var(--border);
+            }
+
+            [for=undo-1],
+            [for=undo-2],
+            [for=undo-3] {
+              top: 0;
+              left: 0;
+            }
+            [for=undo-4] {
+              bottom: 0;
+              top: auto;
+              left: 149px;
+            }
+
+            &:has(.level-5 .s :checked) { /* RAINS .. trains */
+              p span:nth-child(7)::after {
+                counter-set: c7 5;
+                width: var(--size);
+                border: var(--border);
+              }
+
+              [for=undo-1],
+              [for=undo-2],
+              [for=undo-3],
+              [for=undo-4] {
+                top: 0;
+                left: 0;
+              }
+              [for=undo-5] {
+                bottom: 0;
+                top: auto;
+                left: 224px;
+              }
+
+              &:has(.level-6 .t :checked) { /* TRAINS */
+                p span:nth-child(1)::after {
+                  counter-set: c1 6;
+                  width: var(--size);
+                  border: var(--border);
+                }
+  
+                [for=undo-1],
+                [for=undo-2],
+                [for=undo-3],
+                [for=undo-4],
+                [for=undo-5] {
+                  top: 0;
+                  left: 0;
+                }
+              }
+            }
+
+            &:has(.level-5 .t :checked) { /* TRAIN .. strain */
+              p span:nth-child(2)::after {
+                counter-set: c2 6;
+                width: var(--size);
+                border: var(--border);
+              }
+
+              [for=undo-1],
+              [for=undo-2],
+              [for=undo-3],
+              [for=undo-4] {
+                top: 0;
+                left: 0;
+              }
+
+              [for=undo-5] {
+                bottom: 0;
+                top: auto;
+                left: 24px;
+              }
+
+              &:has(.level-6 .s :checked) { /* TRAIN .. strain */
+                p span:nth-child(1)::after {
+                  counter-set: c1 5;
+                  width: var(--size);
+                  border: var(--border);
+                }
+  
+                [for=undo-1],
+                [for=undo-2],
+                [for=undo-3],
+                [for=undo-4],
+                [for=undo-5] {
+                  top: 0;
+                  left: 0;
+                }
+              }
+            }
+          }
+
+          &:has(.level-4 .t :checked) { /* RANT .. rants */
+            p span:nth-child(6)::after {
+              counter-set: c6 6;
+              width: var(--size);
+              border: var(--border);
+            }
+
+            [for=undo-1],
+            [for=undo-2],
+            [for=undo-3] {
+              top: 0;
+              left: 0;
+            }
+            [for=undo-4] {
+              bottom: 0;
+              top: auto;
+              left: 199px;
+            }
+
+            .level-5 .i {
+              /* not RANT + I */
+              pointer-events: none
+            }
+          
+            &:has(.level-5 .s :checked) { /* RANTS */
+              p span:nth-child(7)::after {
+                counter-set: c7 5;
+                width: var(--size);
+                border: var(--border);
+              }
+
+              [for=undo-1],
+              [for=undo-2],
+              [for=undo-3],
+              [for=undo-4] {
+                top: 0;
+                left: 0;
+              }
+              [for=undo-5] {
+                bottom: 0;
+                top: auto;
+                left: 224px;
+              }
+
+              .level-5 .i {
+                /* not RANT + I */
+                pointer-events: none
+              }
+            }
+          }
+        }
+
+        &:has(.level-3 .t :checked) { /* ANT .. rant, rants, ants, rants */
+          p span:nth-child(6)::after {
+            counter-set: c6 6;
+            width: var(--size);
+            border: var(--border);
+          }
+
+          [for=undo-1],
+          [for=undo-2] {
+            top: 0;
+            left: 0;
+          }
+          [for=undo-3] {
+            bottom: 0;
+            top: auto;
+            left: 174px;
+          }
+
+          &:has(.level-4 .r :checked) { /* RANT .. rants*/
+            p span:nth-child(3)::after {
+              counter-set: c3 4;
+              width: var(--size);
+              border: var(--border);
+            }
+
+            [for=undo-1],
+            [for=undo-2],
+            [for=undo-3] {
+              top: 0;
+              left: 0;
+            }
+            [for=undo-4] {
+              bottom: 0;
+              top: auto;
+              left: 49px;
+            }
+
+            .level-4 .i {
+              /* not ANTS + I */
+              pointer-events: none
+            }
+
+            &:has(.level-5 .s :checked) { /* RANTS */
+              p span:nth-child(7)::after {
+                counter-set: c7 5;
+                width: var(--size);
+                border: var(--border);
+              }
+
+              [for=undo-1],
+              [for=undo-2],
+              [for=undo-3],
+              [for=undo-4] {
+                top: 0;
+                left: 0;
+              }
+              [for=undo-5] {
+                bottom: 0;
+                top: auto;
+                left: 224px;
+              }
+
+              .level-6 .i {
+                /* not RANTS + I */
+                pointer-events: none
+              }
+            }
+          }
+
+          &:has(.level-4 .s :checked) { /* ANTS .. rants*/
+            p span:nth-child(7)::after {
+              counter-set: c7 5;
+              width: var(--size);
+              border: var(--border);
+            }
+
+            [for=undo-1],
+            [for=undo-2],
+            [for=undo-3] {
+              top: 0;
+              left: 0;
+            }
+            [for=undo-4] {
+              bottom: 0;
+              top: auto;
+              left: 199px;
+            }
+
+            .level-4 .i {
+              /* not ANTS + I */
+              pointer-events: none
+            }
+
+            &:has(.level-5 .r :checked) { /* RANTS */
+              p span:nth-child(2)::after {
+                counter-set: c2 4;
+                width: var(--size);
+                border: var(--border);
+              }
+
+              [for=undo-1],
+              [for=undo-2],
+              [for=undo-3],
+              [for=undo-4] {
+                top: 0;
+                left: 0;
+              }
+              [for=undo-5] {
+                bottom: 0;
+                top: auto;
+                left: 24px;
+              }
+
+              .level-6 .i {
+                /* not RANTS + I */
+                pointer-events: none
+              }
+            }
+          }
+        }
+
+        [for=undo-1],
+        [for=undo-2] {
+          top: 0;
+          left: 0;
+        }
+    
+        [for=undo-3] {
+          bottom: 0;
+          top: auto;
+          left: 74px;
         }
       }
+    }
 
-      &:not(:has(.level-3 :checked)) {
-        background-color: red;
+    &:has(.level-2 .s :checked) { /* AS */
+      p span:nth-child(5)::after {
+        counter-set: c5 5;
+        width: var(--size);
+        border: var(--border);
+      }
+  
+      [for=undo-1] {
+        top: 0;
+        left: 0;
+      } 
+      [for=undo-2] {
+        bottom: 0;
+        top: auto;
+        left: 149px;
+      }
+
+      .level-3 .i,
+      .level-3 .n,
+      .level-3 .r,
+      .level-3 .t {
+        /* not AS + */
+        pointer-events: none
+      }
+    }
+
+    &:has(.level-2 .t :checked) { /* AT */
+      p span:nth-child(5)::after {
+        counter-set: c5 6;
+        width: var(--size);
+        border: var(--border);
+      }
+  
+      [for=undo-1] {
+        top: 0;
+        left: 0;
+      } 
+      [for=undo-2] {
+        bottom: 0;
+        top: auto;
+        left: 149px;
+      }
+
+      .level-3 .i {
+        /* not AT + I */
+        pointer-events: none
+      }
+
+      &:has(.level-3 > label [id]:checked) { 
+        &:has(.level-3 .n :checked) { /* ANT .. rant, rants, ants, rants */
+          p span:nth-child(5)::after {
+            counter-set: c5 3;
+            width: var(--size);
+            border: var(--border);
+          }
+          p span:nth-child(6)::after {
+            counter-set: c6 6;
+            width: var(--size);
+            border: var(--border);
+          }
+
+          [for=undo-1],
+          [for=undo-2] {
+            top: 0;
+            left: 0;
+          }
+          [for=undo-3] {
+            bottom: 0;
+            top: auto;
+            left: 124px;
+          }
+
+          &:has(.level-4 .r :checked) { /* RANT .. rants*/
+            p span:nth-child(3)::after {
+              counter-set: c3 4;
+              width: var(--size);
+              border: var(--border);
+            }
+
+            [for=undo-1],
+            [for=undo-2],
+            [for=undo-3] {
+              top: 0;
+              left: 0;
+            }
+            [for=undo-4] {
+              bottom: 0;
+              top: auto;
+              left: 49px;
+            }
+
+            .level-4 .i {
+              /* not ANTS + I */
+              pointer-events: none
+            }
+
+            &:has(.level-5 .s :checked) { /* RANTS */
+              p span:nth-child(7)::after {
+                counter-set: c7 5;
+                width: var(--size);
+                border: var(--border);
+              }
+
+              [for=undo-1],
+              [for=undo-2],
+              [for=undo-3],
+              [for=undo-4] {
+                top: 0;
+                left: 0;
+              }
+              [for=undo-5] {
+                bottom: 0;
+                top: auto;
+                left: 224px;
+              }
+
+              .level-6 .i {
+                /* not RANTS + I */
+                pointer-events: none
+              }
+            }
+          }
+
+          &:has(.level-4 .s :checked) { /* ANTS .. rants*/
+            p span:nth-child(7)::after {
+              counter-set: c7 5;
+              width: var(--size);
+              border: var(--border);
+            }
+
+            [for=undo-1],
+            [for=undo-2],
+            [for=undo-3] {
+              top: 0;
+              left: 0;
+            }
+            [for=undo-4] {
+              bottom: 0;
+              top: auto;
+              left: 199px;
+            }
+
+            .level-4 .i {
+              /* not ANTS + I */
+              pointer-events: none
+            }
+
+            &:has(.level-5 .r :checked) { /* RANTS */
+              p span:nth-child(2)::after {
+                counter-set: c2 4;
+                width: var(--size);
+                border: var(--border);
+              }
+
+              [for=undo-1],
+              [for=undo-2],
+              [for=undo-3],
+              [for=undo-4] {
+                top: 0;
+                left: 0;
+              }
+              [for=undo-5] {
+                bottom: 0;
+                top: auto;
+                left: 24px;
+              }
+
+              .level-6 .i {
+                /* not RANTS + I */
+                pointer-events: none
+              }
+            }
+          }
+        }
+
+        [for=undo-1],
+        [for=undo-2] {
+          top: 0;
+          left: 0;
+        }
+    
+        [for=undo-3] {
+          bottom: 0;
+          top: auto;
+          left: 74px;
+        }
+        &:has(.level-3 .r :checked) { /* RAT */
+          p span:nth-child(3)::after {
+            counter-set: c3 4;
+            width: var(--size);
+            border: var(--border);
+          }
+      
+          [for=undo-1],  
+          [for=undo-2] {
+            top: 0;
+            left: 0;
+          } 
+          [for=undo-3] {
+            bottom: 0;
+            top: auto;
+            left: 74px;
+          }
+
+          .level-4 .i {
+            /* not RAT + I */
+            pointer-events: none
+          }
+
+          &:has(.level-4 .n :checked) { /* RANT */
+            p span:nth-child(5)::after {
+              counter-set: c5 3;
+              width: var(--size);
+              border: var(--border);
+            }
+            p span:nth-child(6)::after {
+              counter-set: c6 6;
+              width: var(--size);
+              border: var(--border);
+            }
+        
+            [for=undo-1],  
+            [for=undo-2],  
+            [for=undo-3] {
+              top: 0;
+              left: 0;
+            } 
+            [for=undo-4] {
+              bottom: 0;
+              top: auto;
+              left: 149px;
+            }
+
+            .level-5 .i {
+              /* not RANT + I*/
+              pointer-events: none
+            }
+
+            &:has(.level-5 .s :checked) { /* RANTS */
+              p span:nth-child(7)::after {
+                counter-set: c7 5;
+                width: var(--size);
+                border: var(--border);
+              }
+          
+              [for=undo-1],  
+              [for=undo-2],  
+              [for=undo-3],  
+              [for=undo-4] {
+                top: 0;
+                left: 0;
+              } 
+              [for=undo-5] {
+                bottom: 0;
+                top: auto;
+                left: 224px;
+              }
+  
+              .level-6 .i {
+                /* not RANTS + I */
+                pointer-events: none
+              }
+            }
+          }
+
+          &:has(.level-4 .s :checked) {
+            /* RATS */
+            p span:nth-child(6)::after {
+              counter-set: c6 5;
+              width: var(--size);
+              border: var(--border);
+            }
+        
+            [for=undo-1],  
+            [for=undo-2],  
+            [for=undo-3] {
+              top: 0;
+              left: 0;
+            } 
+            [for=undo-4] {
+              bottom: 0;
+              top: auto;
+              left: 199px;
+            }
+
+            .level-4 .i,
+            .level-4 .n {
+              /* not RAT + I|N*/
+              pointer-events: none
+            }
+          }
+        }
+
+        &:has(.level-3 .s :checked) {
+          /* SAT */
+          p span:nth-child(3)::after {
+            counter-set: c3 5;
+            width: var(--size);
+            border: var(--border);
+          }
+
+          .level-4 .i,
+          .level-4 .n,
+          .level-4 .r {
+            /* not SAT + */
+            pointer-events: none
+          }
+        }
+
+        [for=undo-1],  
+        [for=undo-2] {
+          top: 0;
+          left: 0;
+        } 
+        [for=undo-3] {
+          bottom: 0;
+          top: auto;
+          left: 74px;
+        }
       }
     }
   }
 
-  :has(.level-1 .a :checked) {
-    .level-2:has(.t :not(:checked)) .level-3 .s {
-      /*  */
-      display: none;
+  &:has(.level-1 .i :checked) { /* I .. in, sin, tin, tins */
+    p span:nth-child(5)::after {
+      counter-set: c5 2;
+      width: var(--size);
+      border: var(--border);
     }
 
-    .level-2:has(.s :checked) .level-3 {
-      .t, .n {
-        display: none;
+    [for=undo-1] {
+      bottom: 0;
+      top: auto;
+      left: 124px;
+    }
+
+    &:has(.level-2 .n :checked) { /* IN .. sin, tin, tins */
+      p span:nth-child(6)::after {
+        counter-set: c6 3;
+        width: var(--size);
+        border: var(--border);
+      }
+  
+      [for=undo-1] {
+        top: 0;
+        left: 0;
+      } 
+      [for=undo-2] {
+        bottom: 0;
+        top: auto;
+        left: 149px;
+      }
+
+      .level-3 .r {
+        /* not RIN */
+        pointer-events: none
+      }
+
+      &:has(.level-3 > label [id]:checked) { 
+        /* [id] added to increase specificity */
+        &:has(.level-3 .t :checked) { /* TIN .. tins */
+          p span:nth-child(4)::after {
+            counter-set: c4 6;
+            width: var(--size);
+            border: var(--border);
+          }
+
+          &:has(.level-4 .s :checked) { /* TINS */
+            p span:nth-child(7)::after {
+              counter-set: c7 5;
+              width: var(--size);
+              border: var(--border);
+            }
+
+            [for=undo-1],
+            [for=undo-2],
+            [for=undo-3] {
+              top: 0;
+              left: 0;
+            }
+            [for=undo-4] {
+              bottom: 0;
+              top: auto;
+              left: 199px;
+            }
+
+            .level-5 .r {
+              pointer-events: none
+            }
+          }
+        }
+        &:has(.level-3 .s :checked) { /* SIN */
+          p span:nth-child(4)::after {
+            counter-set: c4 5;
+            width: var(--size);
+            border: var(--border);
+          }
+
+          .level-4 .t {
+            /* not SIN+T */
+            pointer-events: none
+          }
+        }
+    
+        [for=undo-1],
+        [for=undo-2] {
+          top: 0;
+          left: 0;
+        }
+    
+        [for=undo-3] {
+          bottom: 0;
+          top: auto;
+          left: 74px;
+        }
+
+        .level-4 .r {
+          /* not XIN+R */
+          pointer-events: none
+        }
       }
     }
-  } 
+
+    &:has(.level-2 .s :checked) {
+      p span:nth-child(6)::after {
+        counter-set: c6 5;
+        width: var(--size);
+        border: var(--border);
+      }
+  
+      [for=undo-1] {
+        top: 0;
+        left: 0;
+      } 
+      [for=undo-2] {
+        bottom: 0;
+        top: auto;
+        left: 149px;
+      }
+
+      .level-3 .n,
+      .level-3 .r,
+      .level-3 .t {
+        /* IS and no more */
+        pointer-events: none
+      }
+    }
+
+    &:has(.level-2 .t :checked) {
+      /* IT */
+      p span:nth-child(6)::after {
+        counter-set: c6 6;
+        width: var(--size);
+        border: var(--border);
+      }
+  
+      [for=undo-1] {
+        top: 0;
+        left: 0;
+      } 
+      [for=undo-2] {
+        bottom: 0;
+        top: auto;
+        left: 149px;
+      }
+
+      .level-3 .r {
+        /* not RIT */
+        pointer-events: none
+      }
+
+      &:has(.level-3 > label [id]:checked) { 
+        /* [id] added to increase specificity */
+        &:has(.level-3 .n :checked) {
+          /* NIT */
+          p span:nth-child(4)::after {
+            counter-set: c4 3;
+            width: var(--size);
+            border: var(--border);
+          }
+
+          &:has(.level-4 .s :checked) {
+            /* NITS */
+            p span:nth-child(7)::after {
+              counter-set: c7 5;
+              width: var(--size);
+              border: var(--border);
+            }
+
+            [for=undo-1],
+            [for=undo-2],
+            [for=undo-3] {
+              top: 0;
+              left: 0;
+            }
+            [for=undo-4] {
+              bottom: 0;
+              top: auto;
+              left: 199px;
+            }
+
+            .level-5 .r {
+              pointer-events: none;
+            }
+          }
+        }
+        &:has(.level-3 .s :checked) { /* SIT */
+          p span:nth-child(4)::after {
+            counter-set: c4 5;
+            width: var(--size);
+            border: var(--border);
+          }
+
+          .level-4 .n {
+            /* not SIT+N */
+            pointer-events: none
+          }
+        }
+    
+        [for=undo-1],
+        [for=undo-2] {
+          top: 0;
+          left: 0;
+        }
+    
+        [for=undo-3] {
+          bottom: 0;
+          top: auto;
+          left: 74px;
+        }
+
+        .level-4 .r {
+          /* not XIT+R */
+          pointer-events: none
+        }
+      }
+    }
+  }
 }
 
 p#word {
@@ -387,26 +1173,30 @@ p span {
   }
 
   &:nth-child(1)::after {
-    content: counter(u, letters);
+    content: counter(c1, letters);
   }
 
   &:nth-child(2)::after {
-    content: counter(v, letters);
+    content: counter(c2, letters);
   }
 
   &:nth-child(3)::after {
-    content: counter(w, letters);
+    content: counter(c3, letters);
   }
 
   &:nth-child(4)::after {
-    content: counter(x, letters);
+    content: counter(c4, letters);
   }
 
   &:nth-child(5)::after {
-    content: counter(y, letters);
+    content: counter(c5, letters);
   }
 
   &:nth-child(6)::after {
-    content: counter(z, letters);
+    content: counter(c6, letters);
+  }
+
+  &:nth-child(7)::after {
+    content: counter(c7, letters);
   }
 }

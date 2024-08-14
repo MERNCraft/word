@@ -1,3 +1,14 @@
+STRAIN
+ TRAINS
+   ANTS
+1234567
+   4321
+
+   TINS
+   NITS
+STRAIN
+
+
 AN
   RAN
     IRAN
@@ -27,14 +38,14 @@ IS
 IT
   NIT
     NITS
-  ~~SIT~~
-  ITS
-    NITS
-<!-- TA
-  TAR
-    STAR
+  SIT
+  ~~ITS~~
+    ~~NITS~~
+~~TA~~
+  ~~TAR~~
+    ~~STAR~~
     ~~TSAR~~
-    ~~TARS~~ -->
+    ~~TARS~~
 
 AINRST
 
