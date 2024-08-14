@@ -44,8 +44,10 @@
   --col3: calc(var(--left4) + var(--size) + var(--space));
   --border: var(--brdr) solid var(--white);
 
+  --over:    calc(var(--size) + var(--space));
   --win:     "You scored ";
-  --ner:     " points!";
+  --ner:     " points in ";
+  --time:    "s!";
   --message: "You ran out of time!";
 
   counter-set:
@@ -57,7 +59,7 @@
     c6 0
     c7 0
     score 0
-    countdown 100
+    timer 0
   ;
 
 }
@@ -82,7 +84,7 @@ main {
   border: var(--brdr) solid var(--white);
   border-radius: var(--pad);
   box-sizing: border-box;
-  background-color: var(--bg);
+  background-color: var(--dark);
   overflow: hidden;
 }
 
@@ -984,6 +986,14 @@ main {
   }
 }
 
+
+
+@counter-style letters {
+  system: cyclic;
+  symbols: "A" "I" "N" "R" "S" "T" "";
+}
+
+
 p#word {
   position: absolute;
   width: 100%;
@@ -995,49 +1005,44 @@ p#word {
 
   font-size: var(--size);
   line-height: var(--size);
-  background-color: var(--dark);
+  background-color: var(--bg);
   border-top: var(--border);
-}
 
-@counter-style letters {
-  system: cyclic;
-  symbols: "A" "I" "N" "R" "S" "T" "";
-}
+  span {
+    text-align: center;
 
-p#word span {
-  text-align: center;
+    &::after {
+      display: inline-block;
+      box-sizing: border-box;
+    }
 
-  &::after {
-    display: inline-block;
-    box-sizing: border-box;
-  }
+    &:nth-child(1)::after {
+      content: counter(c1, letters);
+    }
 
-  &:nth-child(1)::after {
-    content: counter(c1, letters);
-  }
+    &:nth-child(2)::after {
+      content: counter(c2, letters);
+    }
 
-  &:nth-child(2)::after {
-    content: counter(c2, letters);
-  }
+    &:nth-child(3)::after {
+      content: counter(c3, letters);
+    }
 
-  &:nth-child(3)::after {
-    content: counter(c3, letters);
-  }
+    &:nth-child(4)::after {
+      content: counter(c4, letters);
+    }
 
-  &:nth-child(4)::after {
-    content: counter(c4, letters);
-  }
+    &:nth-child(5)::after {
+      content: counter(c5, letters);
+    }
 
-  &:nth-child(5)::after {
-    content: counter(c5, letters);
-  }
+    &:nth-child(6)::after {
+      content: counter(c6, letters);
+    }
 
-  &:nth-child(6)::after {
-    content: counter(c6, letters);
-  }
-
-  &:nth-child(7)::after {
-    content: counter(c7, letters);
+    &:nth-child(7)::after {
+      content: counter(c7, letters);
+    }
   }
 }
 
@@ -1066,8 +1071,8 @@ p#time {
 }
 
 p#time::after {
-  content: counter(countdown);
-  animation: countdown 100s step-end forwards;
+  content: counter(timer) "s";
+  animation: timer 100s step-end forwards;
 }
 
 p#score {
@@ -1081,7 +1086,7 @@ p#score::after {
   position: absolute;
   width: var(--main);
   top: 0;
-  bottom: var(--size);
+  bottom: var(--over);
   background-color: #030;
   text-align: center;
   display: none;
@@ -1091,7 +1096,7 @@ p.message {
   margin: var(--pad) 0;
 
   &::before {
-    content: var(--win) counter(score) var(--ner);
+    content: var(--win) counter(score) var(--ner) counter(timer) var(--time);
   }
   &::after {
     content: var(--message);
@@ -1142,108 +1147,108 @@ a.github {
   }
 }
 
-@keyframes countdown {
-   0% { counter-increment: countdown   -0; }
-   1% { counter-increment: countdown   -1; }
-   2% { counter-increment: countdown   -2; }
-   3% { counter-increment: countdown   -3; }
-   4% { counter-increment: countdown   -4; }
-   5% { counter-increment: countdown   -5; }
-   6% { counter-increment: countdown   -6; }
-   7% { counter-increment: countdown   -7; }
-   8% { counter-increment: countdown   -8; }
-   9% { counter-increment: countdown   -9; }
-  10% { counter-increment: countdown  -10; }
-  11% { counter-increment: countdown  -11; }
-  12% { counter-increment: countdown  -12; }
-  13% { counter-increment: countdown  -13; }
-  14% { counter-increment: countdown  -14; }
-  15% { counter-increment: countdown  -15; }
-  16% { counter-increment: countdown  -16; }
-  17% { counter-increment: countdown  -17; }
-  18% { counter-increment: countdown  -18; }
-  19% { counter-increment: countdown  -19; }
-  20% { counter-increment: countdown  -20; }
-  21% { counter-increment: countdown  -21; }
-  22% { counter-increment: countdown  -22; }
-  23% { counter-increment: countdown  -23; }
-  24% { counter-increment: countdown  -24; }
-  25% { counter-increment: countdown  -25; }
-  26% { counter-increment: countdown  -26; }
-  27% { counter-increment: countdown  -27; }
-  28% { counter-increment: countdown  -28; }
-  29% { counter-increment: countdown  -29; }
-  30% { counter-increment: countdown  -30; }
-  31% { counter-increment: countdown  -31; }
-  32% { counter-increment: countdown  -32; }
-  33% { counter-increment: countdown  -33; }
-  34% { counter-increment: countdown  -34; }
-  35% { counter-increment: countdown  -35; }
-  36% { counter-increment: countdown  -36; }
-  37% { counter-increment: countdown  -37; }
-  38% { counter-increment: countdown  -38; }
-  39% { counter-increment: countdown  -39; }
-  40% { counter-increment: countdown  -40; }
-  41% { counter-increment: countdown  -41; }
-  42% { counter-increment: countdown  -42; }
-  43% { counter-increment: countdown  -43; }
-  44% { counter-increment: countdown  -44; }
-  45% { counter-increment: countdown  -45; }
-  46% { counter-increment: countdown  -46; }
-  47% { counter-increment: countdown  -47; }
-  48% { counter-increment: countdown  -48; }
-  49% { counter-increment: countdown  -49; }
-  50% { counter-increment: countdown  -50; }
-  51% { counter-increment: countdown  -51; }
-  52% { counter-increment: countdown  -52; }
-  53% { counter-increment: countdown  -53; }
-  54% { counter-increment: countdown  -54; }
-  55% { counter-increment: countdown  -55; }
-  56% { counter-increment: countdown  -56; }
-  57% { counter-increment: countdown  -57; }
-  58% { counter-increment: countdown  -58; }
-  59% { counter-increment: countdown  -59; }
-  60% { counter-increment: countdown  -60; }
-  61% { counter-increment: countdown  -61; }
-  62% { counter-increment: countdown  -62; }
-  63% { counter-increment: countdown  -63; }
-  64% { counter-increment: countdown  -64; }
-  65% { counter-increment: countdown  -65; }
-  66% { counter-increment: countdown  -66; }
-  67% { counter-increment: countdown  -67; }
-  68% { counter-increment: countdown  -68; }
-  69% { counter-increment: countdown  -69; }
-  70% { counter-increment: countdown  -70; }
-  71% { counter-increment: countdown  -71; }
-  72% { counter-increment: countdown  -72; }
-  73% { counter-increment: countdown  -73; }
-  74% { counter-increment: countdown  -74; }
-  75% { counter-increment: countdown  -75; }
-  76% { counter-increment: countdown  -76; }
-  77% { counter-increment: countdown  -77; }
-  78% { counter-increment: countdown  -78; }
-  79% { counter-increment: countdown  -79; }
-  80% { counter-increment: countdown  -80; }
-  81% { counter-increment: countdown  -81; }
-  82% { counter-increment: countdown  -82; }
-  83% { counter-increment: countdown  -83; }
-  84% { counter-increment: countdown  -84; }
-  85% { counter-increment: countdown  -85; }
-  86% { counter-increment: countdown  -86; }
-  87% { counter-increment: countdown  -87; }
-  88% { counter-increment: countdown  -88; }
-  89% { counter-increment: countdown  -89; }
-  90% { counter-increment: countdown  -90; }
-  91% { counter-increment: countdown  -91; }
-  92% { counter-increment: countdown  -92; }
-  93% { counter-increment: countdown  -93; }
-  94% { counter-increment: countdown  -94; }
-  95% { counter-increment: countdown  -95; }
-  96% { counter-increment: countdown  -96; }
-  97% { counter-increment: countdown  -97; }
-  98% { counter-increment: countdown  -98; }
-  99% { counter-increment: countdown  -99; }
- 100% { counter-increment: countdown -100; }
+@keyframes timer {
+   0% { counter-increment: timer   0; }
+   1% { counter-increment: timer   1; }
+   2% { counter-increment: timer   2; }
+   3% { counter-increment: timer   3; }
+   4% { counter-increment: timer   4; }
+   5% { counter-increment: timer   5; }
+   6% { counter-increment: timer   6; }
+   7% { counter-increment: timer   7; }
+   8% { counter-increment: timer   8; }
+   9% { counter-increment: timer   9; }
+  10% { counter-increment: timer  10; }
+  11% { counter-increment: timer  11; }
+  12% { counter-increment: timer  12; }
+  13% { counter-increment: timer  13; }
+  14% { counter-increment: timer  14; }
+  15% { counter-increment: timer  15; }
+  16% { counter-increment: timer  16; }
+  17% { counter-increment: timer  17; }
+  18% { counter-increment: timer  18; }
+  19% { counter-increment: timer  19; }
+  20% { counter-increment: timer  20; }
+  21% { counter-increment: timer  21; }
+  22% { counter-increment: timer  22; }
+  23% { counter-increment: timer  23; }
+  24% { counter-increment: timer  24; }
+  25% { counter-increment: timer  25; }
+  26% { counter-increment: timer  26; }
+  27% { counter-increment: timer  27; }
+  28% { counter-increment: timer  28; }
+  29% { counter-increment: timer  29; }
+  30% { counter-increment: timer  30; }
+  31% { counter-increment: timer  31; }
+  32% { counter-increment: timer  32; }
+  33% { counter-increment: timer  33; }
+  34% { counter-increment: timer  34; }
+  35% { counter-increment: timer  35; }
+  36% { counter-increment: timer  36; }
+  37% { counter-increment: timer  37; }
+  38% { counter-increment: timer  38; }
+  39% { counter-increment: timer  39; }
+  40% { counter-increment: timer  40; }
+  41% { counter-increment: timer  41; }
+  42% { counter-increment: timer  42; }
+  43% { counter-increment: timer  43; }
+  44% { counter-increment: timer  44; }
+  45% { counter-increment: timer  45; }
+  46% { counter-increment: timer  46; }
+  47% { counter-increment: timer  47; }
+  48% { counter-increment: timer  48; }
+  49% { counter-increment: timer  49; }
+  50% { counter-increment: timer  50; }
+  51% { counter-increment: timer  51; }
+  52% { counter-increment: timer  52; }
+  53% { counter-increment: timer  53; }
+  54% { counter-increment: timer  54; }
+  55% { counter-increment: timer  55; }
+  56% { counter-increment: timer  56; }
+  57% { counter-increment: timer  57; }
+  58% { counter-increment: timer  58; }
+  59% { counter-increment: timer  59; }
+  60% { counter-increment: timer  60; }
+  61% { counter-increment: timer  61; }
+  62% { counter-increment: timer  62; }
+  63% { counter-increment: timer  63; }
+  64% { counter-increment: timer  64; }
+  65% { counter-increment: timer  65; }
+  66% { counter-increment: timer  66; }
+  67% { counter-increment: timer  67; }
+  68% { counter-increment: timer  68; }
+  69% { counter-increment: timer  69; }
+  70% { counter-increment: timer  70; }
+  71% { counter-increment: timer  71; }
+  72% { counter-increment: timer  72; }
+  73% { counter-increment: timer  73; }
+  74% { counter-increment: timer  74; }
+  75% { counter-increment: timer  75; }
+  76% { counter-increment: timer  76; }
+  77% { counter-increment: timer  77; }
+  78% { counter-increment: timer  78; }
+  79% { counter-increment: timer  79; }
+  80% { counter-increment: timer  80; }
+  81% { counter-increment: timer  81; }
+  82% { counter-increment: timer  82; }
+  83% { counter-increment: timer  83; }
+  84% { counter-increment: timer  84; }
+  85% { counter-increment: timer  85; }
+  86% { counter-increment: timer  86; }
+  87% { counter-increment: timer  87; }
+  88% { counter-increment: timer  88; }
+  89% { counter-increment: timer  89; }
+  90% { counter-increment: timer  90; }
+  91% { counter-increment: timer  91; }
+  92% { counter-increment: timer  92; }
+  93% { counter-increment: timer  93; }
+  94% { counter-increment: timer  94; }
+  95% { counter-increment: timer  95; }
+  96% { counter-increment: timer  96; }
+  97% { counter-increment: timer  97; }
+  98% { counter-increment: timer  98; }
+  99% { counter-increment: timer  99; }
+ 100% { counter-increment: timer 100; }
 }
 
 
