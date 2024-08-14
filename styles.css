@@ -1,0 +1,412 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  --light: #ddd;
+  --mid: #888;
+  --dark: #222;
+  --gap: 0.5em;
+
+  --primary: #060;
+  --primary-border: #393;
+  --primary-active: #030;
+
+  --size: 50px;
+  --border: 1px solid white;
+
+  counter-set:
+    u 0
+    v 0
+    w 0
+    x 0
+    y 0
+    z 0
+  ;
+
+  color: var(--light);
+  background-color: var(--dark);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+html {
+/* BUTTONS / BUTTONS / BUTTONS / BUTTONS / BUTTONS / BUTTONS */
+
+div.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+div.buttons button {
+  flex: 1
+}
+
+div.buttons .primary {
+  margin-left: 0.5em;
+  flex: 2
+}
+
+
+button,
+.button {
+  border: 1px outset var(--mid);
+  border-radius: var(--gap);
+  padding: var(--gap);
+}
+
+button:not(:disabled),
+.button:not(:disabled) {
+  cursor: pointer;
+}
+
+button:hover,
+.button:hover {
+  color: #fff;
+}
+
+button:hover:active,
+.button:hover:active {
+  border-style: inset;
+  background-color: #000;
+}
+
+button.pressed,
+.button.pressed {
+  color: #fff;
+  border-style: inset;
+  background-color: #000;
+}
+
+button.primary,
+.button.primary {
+  background-color: var(--primary);
+  border-color: var(--primary-border);
+}
+
+button.primary:active:hover,
+.button.primary:active:hover {
+  background-color: var(--primary-active);
+}
+}
+
+
+main {
+  position: relative;
+  width: 300px;
+  height: 150px;
+  border: 1px solid #fff;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: #030;
+  /* overflow: hidden; */
+}
+
+
+/* AVAILABLE LETTERS */
+
+[class|=level] {
+  input {
+    position: absolute;
+    top: -7em;
+  }
+  &.level-5 input {
+    top: -6em;
+  }
+  &.level-4 input {
+    top: -5em;
+  }
+  &.level-3 input {
+    top: -4em;
+  }
+  &.level-2 input {
+    top: -3em;
+  }
+  &.level-1 input {
+    top: -2em;
+  }
+  
+  label {  
+    position: absolute;
+    top: 0;
+    --size: 32px;
+    width: var(--size);
+    height: var(--size);
+    font-size: var(--size);
+    line-height: var(--size);
+    text-align: center;
+    border: var(--border)
+  }
+
+  label.a {
+    left: 40px;
+  }
+
+  label.i {
+    left: 80px;
+  }
+
+  label.n {
+    left: 120px;
+  }
+
+  label.r {
+    left: 160px;
+  }
+
+  label.s {
+    left: 200px;
+  }
+
+  label.t {
+    left: 240px;
+  }
+}
+
+
+/* LETTERS THAT CAN BE CHOSEN */
+
+/* Allow selection only at the current level */
+[class|=level]:not(:has(> label :checked)) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #0003;
+}
+
+/* Hide a letter that has been selected at all levels */
+main:has([id|=a]:checked) [class|=level] :checked .a {
+  display: none
+}
+main:has([id|=i]:checked) [class|=level] :checked .i {
+  display: none
+}
+main:has([id|=n]:checked) [class|=level] :checked .n {
+  display: none
+}
+main:has([id|=r]:checked) [class|=level] :checked .r {
+  display: none
+}
+main:has([id|=s]:checked) [class|=level] :checked .s {
+  display: none
+}
+main:has([id|=t]:checked) [class|=level] :checked .t {
+  display: none
+}
+
+
+/* CHOSEN LETTERS  */
+/* .level-1: A or I */
+main:has(.level-1 .a :checked) p span:nth-child(1)::after {
+  counter-set: u 1;
+  width: var(--size);
+  border: var(--border);
+}
+main:has(.level-1 .i :checked) p span:nth-child(1)::after {
+  counter-set: u 2;
+  width: var(--size);
+  border: var(--border);
+}
+
+/* .level-2: N, S or T */
+main:has(.level-2 .n :checked) p span:nth-child(2)::after {
+  counter-set: v 3;
+  width: var(--size);
+  border: var(--border);
+}
+main:has(.level-2 .s :checked) p span:nth-child(2)::after {
+  counter-set: v 5;
+  width: var(--size);
+  border: var(--border);
+}
+main:has(.level-2 .t :checked) p span:nth-child(2)::after {
+  counter-set: v 6;
+  width: var(--size);
+  border: var(--border);
+}
+
+/* .level-3: R|T if AN, R|S if AT
+             S|T if IN, N|S if IT
+ */
+ /* Only show valid letters at level-3 */
+ /* main:has(.level-1 .i :checked):has(.level-2 .n :checked):has(.level-3 .t :checked) p span:nth-child(1)::after {
+
+  counter-set: u 6;
+  width: var(--size);
+  border: var(--border);
+ } */
+
+ main {
+  &:has(.level-1 .i :checked) {
+    /* IS >> no more letters */
+    &:has(.level-2 .s :checked) .level-3 {
+      .r, .s, .t {
+        display: none;
+      }
+    }
+
+    /* IN, IS, IT >> no R */
+    .level-3 .r {
+        display: none;
+    }
+
+    /* Continue with TIN, SIN */
+    &:has(.level-2 .n :checked) {
+      .level-2 {
+        /* Hide labels which would return to IS or IT */
+        .s, .t {
+          display: none;
+        }
+      }
+
+      &:has(.level-3 .t :checked) {
+        /* Allow TIN+S */
+        .level-3 .s {
+          display: none;
+        }
+
+        .level-4 .r {
+          pointer-events: none;
+          color: var(--mid);
+          border-color: var(--mid);
+        }
+
+        &:has(.level-4 .s :checked) p span:nth-child(4)::after {
+          /* TINS */
+          counter-set: x 5;
+          width: var(--size);
+          border: var(--border);
+        }
+      }
+
+      &:has(.level-3 > label :checked) {
+        &:has(.level-3 .s :checked) p span:nth-child(1)::after {
+          /* S+IN */
+          counter-set: u 5;
+          width: var(--size);
+          border: var(--border);
+        }
+        &:has(.level-3 .t :checked) p span:nth-child(1)::after {
+          /* T+IN */
+          counter-set: u 6;
+          width: var(--size);
+          border: var(--border);
+        }
+
+        p span {
+          &:nth-child(2)::after {
+            counter-set: v 2;
+            width: var(--size);
+            border: var(--border);
+          }
+          &:nth-child(3)::after {
+            counter-set: w 3;
+            width: var(--size);
+            border: var(--border);
+          }
+        }
+      }
+
+      &:not(:has(.level-3 :checked)) {
+        background-color: red;
+      }
+    }
+  }
+
+  :has(.level-1 .a :checked) {
+    .level-2:has(.t :not(:checked)) .level-3 .s {
+      /*  */
+      display: none;
+    }
+
+    .level-2:has(.s :checked) .level-3 {
+      .t, .n {
+        display: none;
+      }
+    }
+  } 
+}
+
+p#word {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  margin: 0;
+
+  display: flex;
+  justify-content: center;
+
+  font-family: 'Courier New', Courier, monospace;
+  font-size: var(--size);
+  border-top: var(--border);
+}
+
+p span {
+  /* display: flex;
+  width: var(--size); */
+  height: var(--size);
+  text-align: center;
+  line-height: var(--size);
+}
+
+p span::after {
+  display: inline-block;
+  width: var(--size);
+  height: var(--size);
+
+  border: var(--border);
+  box-sizing: border-box;
+}
+
+@counter-style letters {
+  system: cyclic;
+  symbols: "A" "I" "N" "R" "S" "T" "";
+}
+
+p span {
+  &::after {
+    width: 0;
+    border: none;
+  }
+
+  &:nth-child(1)::after {
+    content: counter(u, letters);
+  }
+
+  &:nth-child(2)::after {
+    content: counter(v, letters);
+  }
+
+  &:nth-child(3)::after {
+    content: counter(w, letters);
+  }
+
+  &:nth-child(4)::after {
+    content: counter(x, letters);
+  }
+
+  &:nth-child(5)::after {
+    content: counter(y, letters);
+  }
+
+  &:nth-child(6)::after {
+    content: counter(z, letters);
+  }
+}
