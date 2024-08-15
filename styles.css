@@ -217,7 +217,7 @@ main {
         width: var(--size);
         border: var(--border);
       }
-      
+
       [for|=undo] {
         left: -999vw;
       }
@@ -1131,7 +1131,7 @@ a.replay {
   &:hover {
     color: var(--white);
   }
-  
+
   &:hover:active {
     border-style: inset;
     background-color: var(--bg);
@@ -1144,6 +1144,7 @@ a.replay {
   width: var(--main);
   height: var(--half);
   background-color: var(--bg);
+  cursor: pointer;
 
   span {
     font-size: var(--font);
