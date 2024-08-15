@@ -49,6 +49,9 @@
   --ner:     " points in ";
   --time:    "s!";
   --message: "You ran out of time!";
+  --z-end:    0;
+  --w-height: 0;
+  --f-height: 0;
 
   counter-set:
     c1 0
@@ -88,31 +91,14 @@ main {
   overflow: hidden;
 }
 
+input {
+  position: absolute;
+  left: -999vw;
+}
+
 
 /* AVAILABLE LETTERS */
-
 [class|=layer] {
-  input {
-    position: absolute;
-    left: -999vw;
-    /* top: -14em; */
-  }
-  /* &.layer-5 input {
-    top: -12em;
-  }
-  &.layer-4 input {
-    top: -10em;
-  }
-  &.layer-3 input {
-    top: -8em;
-  }
-  &.layer-2 input {
-    top: -6em;
-  }
-  &.layer-1 input {
-    top: -4em;
-  } */
-
   label {
     position: absolute;
     top: 0;
@@ -170,13 +156,12 @@ main:has([id|=t]:checked) .t {
   display: none;
 }
 
-
 /* Count div.layer-X out, if it has a letter checked */
 [class|=layer]:has(> [id|=undo]:not(:checked)) {
+  opacity: 0;
   pointer-events: none;
   counter-increment: score;
 }
-
 
 /* Undo labels */
 [for|=undo] {
@@ -191,7 +176,6 @@ main:has([id|=t]:checked) .t {
   background-color: var(--mask);
 }
 
-
 /* Non-starter letters */
 .layer-1 .n,
 .layer-1 .r,
@@ -204,7 +188,6 @@ main:has([id|=t]:checked) .t {
 
 
 /* CHOSEN LETTERS  */
-/* .layer-1: A or I */
 main {
   &:has(.layer-1 .a :checked) {  /* A */
     p#word span:nth-child(4)::after {
@@ -246,8 +229,7 @@ main {
 
       &:has(.layer-3 > label [id]:checked) {
         /* [id] added to increase specificity */
-        &:has(.layer-3 .i :checked) {
-          /* IAN */
+        &:has(.layer-3 .i :checked) { /* IAN */
           p#word span:nth-child(3)::after {
             counter-set: c3 2;
             width: var(--size);
@@ -334,12 +316,11 @@ main {
               [for|=undo] {
                 left: -999vw;
               }
-
               [for=undo-5] {
                 left: var(--left1);
               }
 
-              &:has(.layer-6 .s :checked) { /* TRAIN .. strain */
+              &:has(.layer-6 .s :checked) { /* STRAIN */
                 p#word span:nth-child(1)::after {
                   counter-set: c1 5;
                   width: var(--size);
@@ -508,7 +489,6 @@ main {
         [for|=undo] {
           left: -999vw;
         }
-
         [for=undo-3] {
           left: var(--left3);
         }
@@ -544,7 +524,7 @@ main {
         width: var(--size);
         border: var(--border);
       }
-[for|=undo] {
+      [for|=undo] {
         left: -999vw;
       }
       [for=undo-2] {
@@ -677,7 +657,6 @@ main {
         [for|=undo] {
           left: -999vw;
         }
-
         [for=undo-3] {
           left: var(--left3);
         }
@@ -844,7 +823,7 @@ main {
         width: var(--size);
         border: var(--border);
       }
-[for|=undo] {
+      [for|=undo] {
         left: -999vw;
       }
       [for=undo-2] {
@@ -893,7 +872,6 @@ main {
         [for|=undo] {
           left: -999vw;
         }
-
         [for=undo-3] {
           left: var(--left3);
         }
@@ -906,7 +884,7 @@ main {
         width: var(--size);
         border: var(--border);
       }
-[for|=undo] {
+      [for|=undo] {
         left: -999vw;
       }
       [for=undo-2] {
@@ -928,7 +906,7 @@ main {
         width: var(--size);
         border: var(--border);
       }
-[for|=undo] {
+      [for|=undo] {
         left: -999vw;
       }
       [for=undo-2] {
@@ -977,7 +955,6 @@ main {
         [for|=undo] {
           left: -999vw;
         }
-
         [for=undo-3] {
           left: var(--left3);
         }
@@ -987,12 +964,11 @@ main {
 }
 
 
-
+/* CURRENT WORD */
 @counter-style letters {
   system: cyclic;
   symbols: "A" "I" "N" "R" "S" "T" "";
 }
-
 
 p#word {
   position: absolute;
@@ -1069,10 +1045,8 @@ p#score {
 p#time {
   left: 0;
 }
-
 p#time::after {
   content: counter(timer) "s";
-  animation: timer 100s step-end forwards;
 }
 
 p#score {
@@ -1089,22 +1063,31 @@ p#score::after {
   bottom: var(--over);
   background-color: #030;
   text-align: center;
-  display: none;
+  z-index: var(--z-end);
 }
 
 p.message {
   margin: var(--pad) 0;
 
+  &::before,
+  &::after {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
   &::before {
+    height: var(--w-height);
     content: var(--win) counter(score) var(--ner) counter(timer) var(--time);
   }
   &::after {
+    height: var(--f-height);
     content: var(--message);
-    display: none;
   }
 }
 
-a.replay {
+.button {
   position: absolute;
   left: var(--left2);
   right: var(--left2);
@@ -1116,6 +1099,9 @@ a.replay {
   background-color: var(--plain);
   border: var(--brdr) outset var(--hover);
   border-radius: var(--pad);
+}
+
+a.replay {
 
   &:hover {
     color: var(--white);
@@ -1126,6 +1112,35 @@ a.replay {
     background-color: var(--bg);
   }
 }
+
+.start {
+  position: absolute;
+  left: 0;
+  width: var(--main);
+  height: var(--half);
+  background-color: var(--bg);
+
+  span {
+    font-size: var(--font);
+  }
+}
+
+
+/* Playing and Winning */
+main:has(.start input:checked) {
+  --z-end: -1;
+  animation: timer 100s step-end forwards;
+}
+.start:has(input:checked) {
+  display: none;
+}
+
+main:has(#undo-6:not(:checked)) {
+  --z-end: 1;
+  animation-play-state: paused;
+  --w-height: auto;
+}
+
 
 /* Show the GitHub logo */
 a.github {
@@ -1248,7 +1263,11 @@ a.github {
   97% { counter-increment: timer  97; }
   98% { counter-increment: timer  98; }
   99% { counter-increment: timer  99; }
- 100% { counter-increment: timer 100; }
+ 100% {
+    counter-increment: timer 100;
+    --z-end: 1;
+    --f-height: auto
+  }
 }
 
 
