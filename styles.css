@@ -1144,6 +1144,7 @@ a.replay {
   width: var(--main);
   height: var(--half);
   background-color: var(--bg);
+  cursor: pointer;
 
   span {
     font-size: var(--font);
