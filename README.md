@@ -63,12 +63,12 @@ All colors and dimensions are stored in custom CSS properties at the beginning o
 
 The word "STRAIN" was chosen for this demo, because it can be built up from a single letter, one word at a time. It is possible to reach the same five-letter word "RANTS" by following six different paths:
 
-A   AN   RAN   RANT   RANTS
-A   AN   ANT   RANT   RANTS
-A   AN   ANT   ANTS   RANTS
-A   AT   RAT   RANT   RANTS
-A   AT   ANT   RANT   RANTS
-A   AT   ANT   ANTS   RANTS
+1. A   AN   RAN   RANT   RANTS
+2. A   AN   ANT   RANT   RANTS
+3. A   AN   ANT   ANTS   RANTS
+4. A   AT   RAT   RANT   RANTS
+5. A   AT   ANT   RANT   RANTS
+6. A   AT   ANT   ANTS   RANTS
 
 Each of these paths requires its own specific CSS code.
 
