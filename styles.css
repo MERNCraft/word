@@ -20,7 +20,7 @@
   --plain: #060;
   --hover: #090;
 
-  --main:  300px;
+  --form:  300px;
   --half:  150px;
   --pad:     8px;
   --brdr:    1px;
@@ -80,9 +80,9 @@ body {
 }
 
 
-main {
+form {
   position: relative;
-  width: var(--main);
+  width: var(--form);
   height: var(--half);
   border: var(--brdr) solid var(--white);
   border-radius: var(--pad);
@@ -148,12 +148,12 @@ input {
 }
 
 /* Hide a letter that has been selected at all layers */
-main:has([id|=a]:checked) .a,
-main:has([id|=i]:checked) .i,
-main:has([id|=n]:checked) .n,
-main:has([id|=r]:checked) .r,
-main:has([id|=s]:checked) .s,
-main:has([id|=t]:checked) .t {
+form:has([id|=a]:checked) .a,
+form:has([id|=i]:checked) .i,
+form:has([id|=n]:checked) .n,
+form:has([id|=r]:checked) .r,
+form:has([id|=s]:checked) .s,
+form:has([id|=t]:checked) .t {
   display: none;
 }
 
@@ -191,7 +191,7 @@ main:has([id|=t]:checked) .t {
 
 
 /* CHOSEN LETTERS  */
-main {
+form {
   &:has(.layer-1 .a :checked) {  /* A */
     p#word span:nth-child(4)::after {
       counter-set: c4 1;
@@ -1083,7 +1083,7 @@ p#score::after {
 
 #game-over {
   position: absolute;
-  width: var(--main);
+  width: var(--form);
   top: 0;
   bottom: var(--over);
   background-color: #030;
@@ -1112,6 +1112,7 @@ p.message {
   }
 }
 
+button,
 .button {
   position: absolute;
   left: var(--left2);
@@ -1126,8 +1127,7 @@ p.message {
   border-radius: var(--pad);
 }
 
-a.replay {
-
+button {
   &:hover {
     color: var(--white);
   }
@@ -1141,7 +1141,7 @@ a.replay {
 .start {
   position: absolute;
   left: 0;
-  width: var(--main);
+  width: var(--form);
   height: var(--half);
   background-color: var(--bg);
   pointer-events: none;
@@ -1165,7 +1165,7 @@ a.replay {
 
 
 /* Playing and Winning */
-main:has(.start input:checked) {
+form:has(.start input:checked) {
   --z-end: -1;
   animation: timer 100s step-end forwards;
 }
@@ -1173,7 +1173,7 @@ main:has(.start input:checked) {
   display: none;
 }
 
-main:has(#undo-6:not(:checked)) {
+form:has(#undo-6:not(:checked)) {
   --z-end: 1;
   animation-play-state: paused;
   --w-height: auto;
